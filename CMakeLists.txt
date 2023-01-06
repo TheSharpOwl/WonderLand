@@ -17,7 +17,7 @@ add_executable(main "${WONDERLAND_HEADERS}"  "${WONDERLAND_SRC}" main.cpp)
 
 # TODO link with sfml and check whether it works
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)
-# TODO use cmake variable this is temporary
+target_include_directories(main PUBLIC "${PROJECT_SOURCE_DIR}/inc")
 target_include_directories(main PUBLIC "${SFML_PATH}/include")
 # TODO only add required lib files
 # Add all files which end with .lib (BAD SOLUTION BUT now just want it to work)

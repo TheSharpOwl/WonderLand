@@ -1,5 +1,8 @@
 #include "Game.hpp"
 #include "Level.hpp"
+#include "Character.hpp"
+
+#include <chrono>
 
 namespace wonderland {
 	Game::Game()
@@ -11,6 +14,12 @@ namespace wonderland {
 
 	void Game::run()
 	{
+		// todo make vector of characters this one is here for demo
+		Character wizard({ 100.f, 100.f });
+
+
+		// time point
+		auto tp = std::chrono::steady_clock::now();
 
 		// todo maybe dependency design is wrong
 		// Todo add background music here and add it in level
@@ -24,9 +33,28 @@ namespace wonderland {
 					m_window->close();
 			}
 
+			float dt;
+			{
+				const auto new_tp = std::chrono::steady_clock::now();
+				dt = std::chrono::duration<float>(new_tp - tp).count();
+				tp = new_tp;
+			}
+
+			sf::Vector2f dir = { 0.0f,0.0f };
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				dir.x = 1.f;
+			}
+
+			wizard.setDirection(dir);
+			wizard.update(dt);
+
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
+			// todo bad but ok for now
+			wizard.draw(*m_window);
+
 			m_window->display();
 		}
 	}

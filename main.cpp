@@ -2,6 +2,8 @@
 #include <iostream>
 
 #include "Game.hpp"
+// TODO this is just here to compile
+#include "Animation.hpp"
 
 int main()
 {

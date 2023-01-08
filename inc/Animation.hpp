@@ -10,9 +10,10 @@ namespace wonderland {
 	{
 	public:
 		Animation() = default;
-		Animation(const std::string& fileName, int nFrames, float holdTime)
+		Animation(const std::string& fileName, int nFrames, float holdTime, bool reverseX = false)
 			:
-			holdTime(holdTime)
+			holdTime(holdTime),
+			m_reverseX(reverseX)
 		{
 			// todo check why this is not working
 			//frames.reserve(nFrames);
@@ -32,6 +33,10 @@ namespace wonderland {
 		void applyToSprite(sf::Sprite& s) const
 		{
 			s.setTexture(frames[iFrame]);
+			if (m_reverseX)
+				s.setScale(-1.f, 1.f);
+			else
+				s.setScale(1.f, 1.f); // because textures point to same files and it will ruin the other side animation todo check better solution
 		}
 
 		void update(float dt)
@@ -54,9 +59,12 @@ namespace wonderland {
 		}
 	private:
 		float holdTime;
+		// todo try pointers for textures
 		std::vector<sf::Texture> frames;
 		int iFrame = 0;
 		float time = 0.0f;
+		// for now it revereses right and left
+		bool m_reverseX = false;
 	};
 }
 #endif //  ANIMATION_HPP

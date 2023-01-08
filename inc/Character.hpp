@@ -13,10 +13,28 @@ namespace wonderland
 	class Character
 	{
 	public:
+
+		// todo add later more animations
+		enum class AnimationType
+		{
+			WalkingRight,
+			WalkingLeft,
+			Idle,
+			Count
+		};
+
+		static int animationTypeToInt(AnimationType type)
+		{
+			return static_cast<int>(type);
+		}
+
 		Character(sf::Vector2f pos) : m_pos(std::move(pos))
 		{
+			m_animations.resize(animationTypeToInt(AnimationType::Count));
 			// todo last parameter is random
-			m_animation = Animation("../assets/Mage/Walk/walk", 6,0.1f );
+			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Mage/Walk/walk", 6, 0.1f);
+			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Mage/Walk/walk", 6, 0.1f, true);
+			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Mage/Idle/idle", 14, 0.1f);
 		}
 
 		void draw(sf::RenderTarget& rt) const
@@ -24,15 +42,23 @@ namespace wonderland
 			rt.draw(m_sprite);
 		}
 
-		void setDirection(sf::Vector2f di = sf::Vector2f(1.f, 0.f))
+		void setDirection(sf::Vector2f di)
 		{
 			m_vel = speed * di;
 		}
 		void update(float dt)
 		{
+			if (m_vel.x > 0.f)
+				currentAnimationType = AnimationType::WalkingRight;
+			else if (m_vel.x < 0.f)
+				currentAnimationType = AnimationType::WalkingLeft;
+			else
+				currentAnimationType = AnimationType::Idle;
+
 			m_pos += m_vel * dt;
-			m_animation.update(dt);
-			m_animation.applyToSprite(m_sprite);
+			auto const iAnimation = animationTypeToInt(currentAnimationType);
+			m_animations[iAnimation].update(dt);
+			m_animations[iAnimation].applyToSprite(m_sprite);
 			m_sprite.setPosition(m_pos);
 		}
 
@@ -42,8 +68,9 @@ namespace wonderland
 		sf::Vector2f m_pos;
 		sf::Vector2f m_vel = { 0.0f,0.0f };
 		sf::Sprite m_sprite;
+		AnimationType currentAnimationType;
 		// Todo support many animations for now just one type (move right)
-		Animation m_animation;
+		std::vector<Animation> m_animations;
 	};
 }
 #endif // !CHARACTER_H

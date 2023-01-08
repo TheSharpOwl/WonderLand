@@ -45,6 +45,10 @@ namespace wonderland {
 			{
 				dir.x = 1.f;
 			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				dir.x = -1.f;
+			}
 
 			wizard.setDirection(dir);
 			wizard.update(dt);

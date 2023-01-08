@@ -32,7 +32,7 @@ namespace wonderland {
 				if (reverseX)
 				{
 					img.flipHorizontally();
-					frames[i].loadFromImage(img, sf::IntRect(img.getSize().x / 2 + 1, 0, img.getSize().x / 2, img.getSize().y));
+					frames[i].loadFromImage(img, sf::IntRect(img.getSize().x / 2, 0, img.getSize().x / 2, img.getSize().y));
 				}
 				else
 					frames[i].loadFromImage(img, sf::IntRect(0, 0, img.getSize().x / 2, img.getSize().y));

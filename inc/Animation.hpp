@@ -15,8 +15,6 @@ namespace wonderland {
 			holdTime(holdTime),
 			m_reverseX(reverseX)
 		{
-			// todo check why this is not working
-			//frames.reserve(nFrames);
 			for (int i = 0; i < nFrames; i++)
 			{
 				// apply the pattern filename1,filename2..etc

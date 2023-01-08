@@ -33,6 +33,7 @@ namespace wonderland
 			m_pos += m_vel * dt;
 			m_animation.update(dt);
 			m_animation.applyToSprite(m_sprite);
+			m_sprite.setPosition(m_pos);
 		}
 
 	private:

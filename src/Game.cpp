@@ -15,7 +15,7 @@ namespace wonderland {
 	void Game::run()
 	{
 		// todo make vector of characters this one is here for demo
-		Character wizard({ 100.f, 100.f });
+		Character wizard({ 100.f, 500.f });
 
 
 		// time point

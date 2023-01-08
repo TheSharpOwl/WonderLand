@@ -22,21 +22,25 @@ namespace wonderland {
 				// apply the pattern filename1,filename2..etc
 				// todo make extension customizable
 				frames.push_back(sf::Texture());
-				bool loaded = frames[i].loadFromFile(fileName + std::to_string(i+1) + ".png");
-				if(!loaded)
+				sf::Image img;
+				bool loaded = img.loadFromFile(fileName + std::to_string(i + 1) + ".png");
+				if (!loaded)
 				{
 					std::cout << "error loading the character\n";
 					exit(-1);
 				}
+				if (reverseX)
+				{
+					img.flipHorizontally();
+					frames[i].loadFromImage(img, sf::IntRect(img.getSize().x / 2 + 1, 0, img.getSize().x / 2, img.getSize().y));
+				}
+				else
+					frames[i].loadFromImage(img, sf::IntRect(0, 0, img.getSize().x / 2, img.getSize().y));
 			}
 		}
 		void applyToSprite(sf::Sprite& s) const
 		{
 			s.setTexture(frames[iFrame]);
-			if (m_reverseX)
-				s.setScale(-1.f, 1.f);
-			else
-				s.setScale(1.f, 1.f); // because textures point to same files and it will ruin the other side animation todo check better solution
 		}
 
 		void update(float dt)
@@ -63,8 +67,7 @@ namespace wonderland {
 		std::vector<sf::Texture> frames;
 		int iFrame = 0;
 		float time = 0.0f;
-		// for now it revereses right and left
-		bool m_reverseX = false;
+		bool m_reverseX;
 	};
 }
 #endif //  ANIMATION_HPP

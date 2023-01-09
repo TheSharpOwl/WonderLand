@@ -10,32 +10,39 @@ namespace wonderland {
 	{
 	public:
 		Animation() = default;
+		// todo add option to make the image bigger (because this one used for now is so small so scale factor with 1.f by default)
 		Animation(const std::string& fileName, int nFrames, float holdTime, bool reverseX = false)
 			:
 			holdTime(holdTime),
 			m_reverseX(reverseX)
 		{
+			frames.resize(nFrames);
+
+			sf::Image img;
+			bool loaded = img.loadFromFile(fileName);
+			if (!loaded)
+			{
+				std::cout << "error loading the animation file " << fileName << "\n";
+				exit(-1);
+			}
+
+
+			if (reverseX)
+				img.flipHorizontally();
+
 			for (int i = 0; i < nFrames; i++)
 			{
-				// apply the pattern filename1,filename2..etc
-				// todo make extension customizable
-				frames.push_back(sf::Texture());
-				sf::Image img;
-				bool loaded = img.loadFromFile(fileName + std::to_string(i + 1) + ".png");
-				if (!loaded)
-				{
-					std::cout << "error loading the character\n";
-					exit(-1);
-				}
+
 				if (reverseX)
 				{
-					img.flipHorizontally();
-					frames[i].loadFromImage(img, sf::IntRect(img.getSize().x / 2, 0, img.getSize().x / 2, img.getSize().y));
+					// start from the back (first image is the last one and after it is before last ..etc)
+					frames[nFrames - i - 1].loadFromImage(img, sf::IntRect(i * img.getSize().x / nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
 				}
 				else
-					frames[i].loadFromImage(img, sf::IntRect(0, 0, img.getSize().x / 2, img.getSize().y));
+					frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
 			}
 		}
+
 		void applyToSprite(sf::Sprite& s) const
 		{
 			s.setTexture(frames[iFrame]);

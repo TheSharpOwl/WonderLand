@@ -32,9 +32,9 @@ namespace wonderland
 		{
 			m_animations.resize(animationTypeToInt(AnimationType::Count));
 			// todo last parameter is random
-			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Mage/Walk/walk", 6, 0.1f);
-			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Mage/Walk/walk", 6, 0.1f, true);
-			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Mage/Idle/idle", 14, 0.1f);
+			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f);
+			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, true);
+			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f);
 		}
 
 		void draw(sf::RenderTarget& rt) const

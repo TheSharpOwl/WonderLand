@@ -11,10 +11,11 @@ namespace wonderland {
 	public:
 		Animation() = default;
 		// todo add option to make the image bigger (because this one used for now is so small so scale factor with 1.f by default)
-		Animation(const std::string& fileName, int nFrames, float holdTime, bool reverseX = false)
+		Animation(const std::string& fileName, int nFrames, float holdTime, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), bool reverseX = false)
 			:
 			holdTime(holdTime),
-			m_reverseX(reverseX)
+			m_reverseX(reverseX),
+			m_scale(std::move(scale))
 		{
 			frames.resize(nFrames);
 
@@ -46,6 +47,7 @@ namespace wonderland {
 		void applyToSprite(sf::Sprite& s) const
 		{
 			s.setTexture(frames[iFrame]);
+			s.setScale(m_scale.x, m_scale.y);
 		}
 
 		void update(float dt)
@@ -70,6 +72,10 @@ namespace wonderland {
 		float holdTime;
 		// todo try pointers for textures
 		std::vector<sf::Texture> frames;
+		// todo find a better solution than doing this every frame
+		// scale for each frame (when applying the sprite)
+		sf::Vector2f m_scale;
+		// todo rename priate members to start with m_
 		int iFrame = 0;
 		float time = 0.0f;
 		bool m_reverseX;

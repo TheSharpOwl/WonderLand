@@ -20,6 +20,7 @@ namespace wonderland
 			WalkingRight,
 			WalkingLeft,
 			Idle,
+			Attack, // todo make attack left and attack right
 			Count
 		};
 
@@ -34,6 +35,7 @@ namespace wonderland
 			// todo last parameter is random
 			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f }, true);
+			m_animations[animationTypeToInt(AnimationType::Attack)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
 		}
 
@@ -46,6 +48,7 @@ namespace wonderland
 		{
 			m_vel = speed * di;
 		}
+
 		void update(float dt)
 		{
 			if (m_vel.x > 0.f)
@@ -60,6 +63,15 @@ namespace wonderland
 			m_animations[iAnimation].update(dt);
 			m_animations[iAnimation].applyToSprite(m_sprite);
 			m_sprite.setPosition(m_pos);
+		}
+
+		void attack(float dt)
+		{
+			currentAnimationType = AnimationType::Attack;
+			// maybe put this part in some function for avoiding duplication todo
+			auto const iAnimation = animationTypeToInt(currentAnimationType);
+			m_animations[iAnimation].update(dt);
+			m_animations[iAnimation].applyToSprite(m_sprite);
 		}
 
 	private:

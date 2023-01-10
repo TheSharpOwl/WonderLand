@@ -50,8 +50,16 @@ namespace wonderland {
 				dir.x = -1.f;
 			}
 
+
 			wizard.setDirection(dir);
-			wizard.update(dt);
+
+
+			// todo this is temp find better solution
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+				wizard.attack(dt);
+			else
+				wizard.update(dt);
+
 
 			m_window->clear();
 

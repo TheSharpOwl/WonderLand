@@ -27,7 +27,8 @@ namespace wonderland
 			Idle,
 			AttackRight,
 			AttackLeft,
-			Jump,
+			JumpRight,
+			JumpLeft,
 			Count
 		};
 
@@ -45,7 +46,8 @@ namespace wonderland
 			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f }, true);
 			m_animations[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f }, true);
-			m_animations[animationTypeToInt(AnimationType::Jump)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f });
+			m_animations[animationTypeToInt(AnimationType::JumpRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f });
+			m_animations[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f }, true);
 			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
 		}
 
@@ -63,22 +65,21 @@ namespace wonderland
 
 		void update(float dt)
 		{
-			if (m_vel.x > 0.f)
-				currentAnimationType = AnimationType::WalkingRight;
-			else if (m_vel.x < 0.f)
-				currentAnimationType = AnimationType::WalkingLeft;
-			else
-				currentAnimationType = AnimationType::Idle;
-
-			if(m_vel.y < 0.f)
+			if(m_vel.y < 0) // we are jumping
 			{
-				currentAnimationType = AnimationType::Jump;
+				if (m_vel.x < 0.f)
+					currentAnimationType = AnimationType::JumpLeft;
+				else
+					currentAnimationType = AnimationType::JumpRight;
 			}
-
-			if (currentAnimationType == AnimationType::Jump)
+			else // we are on the ground
 			{
-				OutputDebugStringA(std::to_string(m_vel.y).c_str());
-				OutputDebugStringA("\n");
+				if (m_vel.x > 0.f)
+					currentAnimationType = AnimationType::WalkingRight;
+				else if (m_vel.x < 0.f)
+					currentAnimationType = AnimationType::WalkingLeft;
+				else
+					currentAnimationType = AnimationType::Idle;
 			}
 
 			m_pos += m_vel * dt;
@@ -94,7 +95,7 @@ namespace wonderland
 			m_animations[iAnimation].applyToSprite(m_sprite);
 			m_sprite.setPosition(m_pos);
 		}
-
+		// todo maybe apply gravity even while attacking?
 		void attack(float dt)
 		{
 			if (m_vel.x < 0.f)
@@ -111,14 +112,16 @@ namespace wonderland
 		void jump(float dt)
 		{
 			// negative because sfml y starts from 0 up and increases down
-			m_vel.y = -350.f; // todo this is temp
-			currentAnimationType = AnimationType::Jump;
+			if(m_pos.y == m_startPos.y) // to prevent infinite jumping
+				m_vel.y = -350.f; // todo this is temp
+			update(dt);
+			//currentAnimationType = AnimationType::JumpRight;
 
 
-			// maybe put this part in some function for avoiding duplication todo
-			auto const iAnimation = animationTypeToInt(currentAnimationType);
-			m_animations[iAnimation].update(dt);
-			m_animations[iAnimation].applyToSprite(m_sprite);
+			//// maybe put this part in some function for avoiding duplication todo
+			//auto const iAnimation = animationTypeToInt(currentAnimationType);
+			//m_animations[iAnimation].update(dt);
+			//m_animations[iAnimation].applyToSprite(m_sprite);
 		}
 	private:
 		// todo I think speed should be different from character to another so no static here and passed to ctor

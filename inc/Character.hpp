@@ -20,7 +20,8 @@ namespace wonderland
 			WalkingRight,
 			WalkingLeft,
 			Idle,
-			Attack, // todo make attack left and attack right
+			AttackRight,
+			AttackLeft,
 			Count
 		};
 
@@ -32,10 +33,11 @@ namespace wonderland
 		Character(sf::Vector2f pos) : m_pos(std::move(pos))
 		{
 			m_animations.resize(animationTypeToInt(AnimationType::Count));
-			// todo last parameter is random
+			// todo last parameter is random (scaling one I think)
 			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f }, true);
-			m_animations[animationTypeToInt(AnimationType::Attack)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
+			m_animations[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
+			m_animations[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f }, true);
 			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
 		}
 
@@ -67,7 +69,11 @@ namespace wonderland
 
 		void attack(float dt)
 		{
-			currentAnimationType = AnimationType::Attack;
+			if (m_vel.x < 0.f)
+				currentAnimationType = AnimationType::AttackLeft;
+			else // because by default our character looks at right 
+				currentAnimationType = AnimationType::AttackRight;
+
 			// maybe put this part in some function for avoiding duplication todo
 			auto const iAnimation = animationTypeToInt(currentAnimationType);
 			m_animations[iAnimation].update(dt);

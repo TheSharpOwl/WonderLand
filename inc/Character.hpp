@@ -3,6 +3,11 @@
 
 #include "Animation.hpp"
 
+#include <algorithm>
+
+// for debugging strings
+#include <Windows.h>
+
 /*
  * with help of:
  * https://github.com/planetchili/sfml_sprite/blob/master/SFMLspriteAnim/Source.cpp
@@ -22,6 +27,7 @@ namespace wonderland
 			Idle,
 			AttackRight,
 			AttackLeft,
+			Jump,
 			Count
 		};
 
@@ -30,14 +36,16 @@ namespace wonderland
 			return static_cast<int>(type);
 		}
 
-		Character(sf::Vector2f pos) : m_pos(std::move(pos))
+		Character(sf::Vector2f pos) : m_startPos(std::move(pos))
 		{
+			m_pos = m_startPos;
 			m_animations.resize(animationTypeToInt(AnimationType::Count));
 			// todo last parameter is random (scaling one I think)
 			m_animations[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f }, true);
 			m_animations[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f }, true);
+			m_animations[animationTypeToInt(AnimationType::Jump)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f });
 			m_animations[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
 		}
 
@@ -48,7 +56,9 @@ namespace wonderland
 
 		void setDirection(sf::Vector2f di)
 		{
-			m_vel = speed * di;
+			// y increases from up to down so we add gravity instead of discarding
+			m_vel.y += m_gravity;
+			m_vel.x = speed * di.x;
 		}
 
 		void update(float dt)
@@ -60,7 +70,25 @@ namespace wonderland
 			else
 				currentAnimationType = AnimationType::Idle;
 
+			if(m_vel.y < 0.f)
+			{
+				currentAnimationType = AnimationType::Jump;
+			}
+
+			if (currentAnimationType == AnimationType::Jump)
+			{
+				OutputDebugStringA(std::to_string(m_vel.y).c_str());
+				OutputDebugStringA("\n");
+			}
+
 			m_pos += m_vel * dt;
+			// todo make it ground not start pos and static const for example or something in Level and take it from there
+			if(m_pos.y > m_startPos.y)
+			{
+				m_pos.y = m_startPos.y;
+				m_vel.y = 0.f;
+			}
+
 			auto const iAnimation = animationTypeToInt(currentAnimationType);
 			m_animations[iAnimation].update(dt);
 			m_animations[iAnimation].applyToSprite(m_sprite);
@@ -80,12 +108,26 @@ namespace wonderland
 			m_animations[iAnimation].applyToSprite(m_sprite);
 		}
 
+		void jump(float dt)
+		{
+			// negative because sfml y starts from 0 up and increases down
+			m_vel.y = -350.f; // todo this is temp
+			currentAnimationType = AnimationType::Jump;
+
+
+			// maybe put this part in some function for avoiding duplication todo
+			auto const iAnimation = animationTypeToInt(currentAnimationType);
+			m_animations[iAnimation].update(dt);
+			m_animations[iAnimation].applyToSprite(m_sprite);
+		}
 	private:
 		// todo I think speed should be different from character to another so no static here and passed to ctor
-		static constexpr float speed = 100.0f;
+		static constexpr float speed = 150.f;
 		sf::Vector2f m_pos;
+		sf::Vector2f m_startPos;
 		sf::Vector2f m_vel = { 0.0f,0.0f };
 		sf::Sprite m_sprite;
+		float m_gravity = 1.1f;
 		AnimationType currentAnimationType;
 		// Todo support many animations for now just one type (move right)
 		std::vector<Animation> m_animations;

@@ -55,8 +55,10 @@ namespace wonderland {
 
 
 			// todo this is temp find better solution
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 				wizard.attack(dt);
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				wizard.jump(dt);
 			else
 				wizard.update(dt);
 

@@ -9,15 +9,34 @@ namespace wonderland {
 	class Animation
 	{
 	public:
+
+		struct AnimationInfo
+		{
+			std::string fileName; // path of the file of the animation sprite (image) with its name 
+			int nFrames; // nFrames number of frames with this animation
+			float holdTime; // holdTime how long should a frame last
+			sf::Vector2f scale = sf::Vector2f(1.f, 1.f); // scale how much to scale the image we use as a sprite (maybe it will be too small or too big for the background size)
+			bool reverseX = false; // reverseX should the animation parts be reversed ? (such as making walking-left animation from a walking-right sprite)
+		};
+
+
 		Animation() = default;
 		// todo add option to make the image bigger (because this one used for now is so small so scale factor with 1.f by default)
-		Animation(const std::string& fileName, int nFrames, float holdTime, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), bool reverseX = false)
+		/**
+		 * \brief 
+		 * \param fileName path of the file of the animation sprite (image) with its name 
+		 * \param nFrames number of frames with this animation
+		 * \param holdTime how long should a frame last
+		 * \param scale how much to scale the image we use as a sprite (maybe it will be too small or too big for the background size)
+		 * \param reverseX should the animation parts be reversed ? (such as making walking-left animation from a walking-right sprite)
+		 */
+		Animation(const std::string& fileName, int nFrames, float m_holdTime, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), bool reverseX = false)
 			:
-			holdTime(holdTime),
+			m_holdTime(m_holdTime),
 			m_reverseX(reverseX),
 			m_scale(std::move(scale))
 		{
-			frames.resize(nFrames);
+			m_frames.resize(nFrames);
 
 			sf::Image img;
 			bool loaded = img.loadFromFile(fileName);
@@ -37,25 +56,25 @@ namespace wonderland {
 				if (reverseX)
 				{
 					// start from the back (first image is the last one and after it is before last ..etc)
-					frames[nFrames - i - 1].loadFromImage(img, sf::IntRect(i * img.getSize().x / nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
+					m_frames[nFrames - i - 1].loadFromImage(img, sf::IntRect(i * img.getSize().x / nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
 				}
 				else
-					frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
+					m_frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
 			}
 		}
 
 		void applyToSprite(sf::Sprite& s) const
 		{
-			s.setTexture(frames[iFrame]);
+			s.setTexture(m_frames[m_iFrame]);
 			s.setScale(m_scale.x, m_scale.y);
 		}
 
 		void update(float dt)
 		{
-			time += dt;
-			while (time >= holdTime)
+			m_time += dt;
+			while (m_time >= m_holdTime)
 			{
-				time -= holdTime;
+				m_time -= m_holdTime;
 				advance();
 			}
 		}
@@ -63,21 +82,20 @@ namespace wonderland {
 		void advance()
 		{
 			// todo use mod
-			if (++iFrame >= int(frames.size()))
+			if (++m_iFrame >= int(m_frames.size()))
 			{
-				iFrame = 0;
+				m_iFrame = 0;
 			}
 		}
 	private:
-		float holdTime;
+		float m_holdTime;
 		// todo try pointers for textures
-		std::vector<sf::Texture> frames;
+		std::vector<sf::Texture> m_frames;
 		// todo find a better solution than doing this every frame
 		// scale for each frame (when applying the sprite)
 		sf::Vector2f m_scale;
-		// todo rename priate members to start with m_
-		int iFrame = 0;
-		float time = 0.0f;
+		int m_iFrame = 0;
+		float m_time = 0.0f;
 		bool m_reverseX;
 	};
 }

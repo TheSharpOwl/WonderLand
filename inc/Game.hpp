@@ -8,10 +8,13 @@
 
 namespace wonderland
 {
+	class Character;
 	class Game
 	{
 	public:
 		Game();
+
+		virtual ~Game() = default;
 
 		void run();
 
@@ -22,6 +25,13 @@ namespace wonderland
 	private:
 
 		std::unique_ptr<sf::RenderWindow> m_window;
+
+		// todo find better way to do what this function does
+
+		void loadCharacters();
+		// todo check why unique ptr is not working still (( ?!!!!!!!
+		// always the character we control is at index zero
+		std::vector<std::shared_ptr<Character>> m_characters;
 	};
 }
 #endif

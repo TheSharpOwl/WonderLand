@@ -6,21 +6,51 @@
 namespace wonderland {
 	// For now this class will load the animation from many images with names' pattern X1,X2,X3..etc
 	// Later might need to support sprite sheets
+
+
+			// todo add later more animations
+	enum class AnimationType
+	{
+		WalkingRight,
+		WalkingLeft,
+		Idle,
+		AttackRight,
+		AttackLeft,
+		JumpRight,
+		JumpLeft,
+		Count
+	};
+
+	static int animationTypeToInt(AnimationType type)
+	{
+		return static_cast<int>(type);
+	}
+
+	// todo I think this struct is not needed and the one after it but let's just keep it for now until using config file for a character (json for example)
+	struct AnimationInfo
+	{
+		std::string fileName; // path of the file of the animation sprite (image) with its name 
+		int nFrames; // nFrames number of frames with this animation
+		float holdTime; // holdTime how long should a frame last
+		sf::Vector2f scale = sf::Vector2f(1.f, 1.f); // scale how much to scale the image we use as a sprite (maybe it will be too small or too big for the background size)
+		bool reverseX = false; // reverseX should the animation parts be reversed ? (such as making walking-left animation from a walking-right sprite)
+	};
+
+	struct AnimationTypeWithInfo
+	{
+		AnimationType type;
+		AnimationInfo info;
+
+		AnimationTypeWithInfo(AnimationType t, AnimationInfo i) : type(t), info(i) {}
+	};
+
+
 	class Animation
 	{
 	public:
-
-		struct AnimationInfo
-		{
-			std::string fileName; // path of the file of the animation sprite (image) with its name 
-			int nFrames; // nFrames number of frames with this animation
-			float holdTime; // holdTime how long should a frame last
-			sf::Vector2f scale = sf::Vector2f(1.f, 1.f); // scale how much to scale the image we use as a sprite (maybe it will be too small or too big for the background size)
-			bool reverseX = false; // reverseX should the animation parts be reversed ? (such as making walking-left animation from a walking-right sprite)
-		};
-
-
+		// todo add animation ctor taking AnimationInfo, make std::vector inside character class as a parameter in the ctor of a character and initialize animations from there
 		Animation() = default;
+		virtual ~Animation() = default;
 		// todo add option to make the image bigger (because this one used for now is so small so scale factor with 1.f by default)
 		/**
 		 * \brief 
@@ -62,6 +92,9 @@ namespace wonderland {
 					m_frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
 			}
 		}
+
+		Animation(AnimationInfo animationInfo) : Animation(animationInfo.fileName, animationInfo.nFrames, animationInfo.holdTime, animationInfo.scale, animationInfo.reverseX) {}
+
 
 		void applyToSprite(sf::Sprite& s) const
 		{

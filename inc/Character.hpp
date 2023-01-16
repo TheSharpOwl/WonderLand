@@ -103,6 +103,8 @@ namespace wonderland
 			else // because by default our character looks at right 
 				currentAnimationType = AnimationType::AttackRight;
 
+			m_vel.y = 0.f;
+
 			// maybe put this part in some function for avoiding duplication todo
 			auto const iAnimation = animationTypeToInt(currentAnimationType);
 			m_animations[iAnimation].update(dt);

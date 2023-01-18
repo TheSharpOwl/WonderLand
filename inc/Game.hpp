@@ -14,7 +14,7 @@ namespace wonderland
 	public:
 		Game();
 
-		virtual ~Game() = default;
+		virtual ~Game();
 
 		void run();
 
@@ -29,9 +29,14 @@ namespace wonderland
 		// todo find better way to do what this function does
 
 		void loadCharacters();
+
+		void handleKeyboardEvents(float dt);
+
 		// todo check why unique ptr is not working still (( ?!!!!!!!
 		// always the character we control is at index zero
-		std::vector<std::shared_ptr<Character>> m_characters;
+		std::vector<std::unique_ptr<Character>> m_characters;
+
+		static constexpr int playerIdx = 0;
 	};
 }
 #endif

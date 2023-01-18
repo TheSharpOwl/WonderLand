@@ -12,13 +12,17 @@ namespace wonderland {
 		loadCharacters();
 	}
 
+	// this is here empty and not = default because the compiler in default case will try to generate one
+	// -> won't know where is character dtor (because character class was forward declared)
+	// -> so solution is either make characters shared pointers
+	// (because seems shared ptr has some indirection for looking up of the dtor) or do this thing and I left this thing for educating myself )
+	Game::~Game() 
+	{
+		
+	}
 
 	void Game::run()
 	{
-		// todo make vector of characters this one is here for demo
-		
-
-
 		// time point
 		auto tp = std::chrono::steady_clock::now();
 
@@ -35,40 +39,23 @@ namespace wonderland {
 			}
 
 			float dt;
+
 			{
 				const auto new_tp = std::chrono::steady_clock::now();
 				dt = std::chrono::duration<float>(new_tp - tp).count();
 				tp = new_tp;
 			}
 
-			sf::Vector2f dir = { 0.0f,0.0f };
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				dir.x = 1.f;
-			}
-			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				dir.x = -1.f;
-			}
 
-
-			m_characters[0]->setDirection(dir);
-
-
-			// todo this is temp find better solution
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-				m_characters[0]->attack(dt);
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				m_characters[0]->jump(dt);
-			else
-				m_characters[0]->update(dt);
-
+			handleKeyboardEvents(dt);
 
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
-			// todo bad but ok for now
-			m_characters[0]->draw(*m_window);
+
+			// todo bad *m_window but ok for now
+			for (const auto& ch : m_characters)
+				ch->draw(*m_window);
 
 			m_window->display();
 		}
@@ -87,7 +74,32 @@ namespace wonderland {
 		playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f }, true);
 		playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
 
-		auto playerCharacter = std::make_shared<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
+		auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
 		m_characters.push_back(std::move(playerCharacter));
+	}
+
+	void Game::handleKeyboardEvents(float dt)
+	{
+		sf::Vector2f dir = { 0.0f,0.0f };
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			dir.x = 1.f;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			dir.x = -1.f;
+		}
+
+
+		m_characters[playerIdx]->setDirection(dir);
+
+
+		// todo this is temp find better solution
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+			m_characters[playerIdx]->attack(dt);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			m_characters[playerIdx]->jump(dt);
+		else
+			m_characters[playerIdx]->update(dt);
 	}
 }

@@ -60,7 +60,7 @@ namespace wonderland {
 		 * \param scale how much to scale the image we use as a sprite (maybe it will be too small or too big for the background size)
 		 * \param reverseX should the animation parts be reversed ? (such as making walking-left animation from a walking-right sprite)
 		 */
-		Animation(const std::string& fileName, int nFrames, float m_holdTime, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), bool reverseX = false)
+		Animation(const std::string& fileName, int nFrames, float m_holdTime, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), bool reverseX = false, sf::Vector2f cutOff = sf::Vector2f(0.f, 0.f))
 			:
 			m_holdTime(m_holdTime),
 			m_reverseX(reverseX),
@@ -86,10 +86,10 @@ namespace wonderland {
 				if (reverseX)
 				{
 					// start from the back (first image is the last one and after it is before last ..etc)
-					m_frames[nFrames - i - 1].loadFromImage(img, sf::IntRect(i * img.getSize().x / nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
+					m_frames[nFrames - i - 1].loadFromImage(img, sf::IntRect(i * img.getSize().x / nFrames + cutOff.x, cutOff.y, img.getSize().x / nFrames - cutOff.x, img.getSize().y - cutOff.y));
 				}
 				else
-					m_frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames, 0, img.getSize().x / nFrames, img.getSize().y));
+					m_frames[i].loadFromImage(img, sf::IntRect(i * img.getSize().x/nFrames + cutOff.x, cutOff.y, img.getSize().x / nFrames - cutOff.x, img.getSize().y - cutOff.y));
 			}
 		}
 

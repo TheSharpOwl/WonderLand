@@ -90,16 +90,19 @@ namespace wonderland {
 
 		// todo make a pointer to animation then if null don't do it later or use optional
 		std::vector<Animation> enemyCharacterAnim;
+		// todo make cutoff 4 parameters from the 4 sides
+		// todo might need to leave more space for animations to not look weird
+		sf::Vector2f cutoff(35.f, 70.f);
 		enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
-		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f });
-		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, true);
-		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f });
-		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, true);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, false, cutoff);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, true, cutoff);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, false, cutoff);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, true, cutoff);
 		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {};
 		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
-		enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, { 2.f, 2.f }, true);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, { 2.f, 2.f }, true, cutoff);
 
-		auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 }, enemyCharacterAnim);
+		auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 + cutoff.y * 2}, enemyCharacterAnim);
 		m_characters.push_back(std::move(enemyCharacter));
 	}
 

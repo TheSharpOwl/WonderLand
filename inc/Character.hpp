@@ -36,8 +36,9 @@ namespace wonderland
 			// todo add such macros to wiki or readme
 			// todo change color when character collides with another
 			// todo seems custom size for collision is needeed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
+#define DEBUG_PHYSICS
 #ifdef DEBUG_PHYSICS
-			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTexture()->getSize().x * m_sprite.getScale().x, m_sprite.getTexture()->getSize().y * m_sprite.getScale().y));
+			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
 			rect.setPosition(m_sprite.getPosition());
 			rect.setOutlineThickness(1.f);
 			rect.setOutlineColor(sf::Color(127, 255, 0));

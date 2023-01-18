@@ -49,13 +49,23 @@ namespace wonderland {
 
 			handleKeyboardEvents(dt);
 
+			for(std::size_t i = 1 ; i < m_characters.size();i++)
+			{
+				m_characters[i]->update(dt);
+			}
+
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
 
 			// todo bad *m_window but ok for now
-			for (const auto& ch : m_characters)
-				ch->draw(*m_window);
+			for (std::size_t i = 1; i < m_characters.size(); i++)
+			{
+				m_characters[i]->draw(*m_window);
+			}
+
+			// draw player in the end to appear above every other character in case of overlapping
+			m_characters[playerIdx]->draw(*m_window);
 
 			m_window->display();
 		}
@@ -76,6 +86,21 @@ namespace wonderland {
 
 		auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
 		m_characters.push_back(std::move(playerCharacter));
+
+
+		// todo make a pointer to animation then if null don't do it later or use optional
+		std::vector<Animation> enemyCharacterAnim;
+		enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
+		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f });
+		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, true);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f });
+		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, true);
+		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {};
+		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
+		enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, { 2.f, 2.f }, true);
+
+		auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 }, enemyCharacterAnim);
+		m_characters.push_back(std::move(enemyCharacter));
 	}
 
 	void Game::handleKeyboardEvents(float dt)

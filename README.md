@@ -1,6 +1,10 @@
 # WonderLand
 Some 2D game (name subject to change)
 
+## Demos for stages of development
+[Youtube Link](https://www.youtube.com/playlist?list=PLgAAHVNxxjaW3VWccW8dsZ5yQXRceOENX)
+### Latest stage so far:
+[![Latest Development stage](https://img.youtube.com/vi/AhIvYpkW04c/0.jpg)](https://www.youtube.com/watch?v=AhIvYpkW04c)
 ## Dependencies:
 For now writing what I am using (will update it to all possible versions..etc)
 * Visual Studio 2022

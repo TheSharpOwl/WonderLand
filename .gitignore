@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 build/
 modules/
+assets/not_used/
+.vscode/

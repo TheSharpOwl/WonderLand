@@ -73,37 +73,47 @@ namespace wonderland {
 
 	void Game::loadCharacters()
 	{
-		// first character (which the player controls)
-		std::vector<Animation> playerCharacterAnim;
-		playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
-		playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f });
-		playerCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, { 2.f, 2.f }, true);
-		playerCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f });
-		playerCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, { 2.f, 2.f }, true);
-		playerCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f });
-		playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, { 2.f, 2.f }, true);
-		playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, { 2.f, 2.f });
+		
+		{
+			// first character (which the player controls)
+			TextureChangeInfo info;
+			info.scale = { 2.f, 2.f };
+			std::vector<Animation> playerCharacterAnim;
+			playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
+			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info);
+			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info,true);
+			playerCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info);
+			playerCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info, true);
+			playerCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info);
+			playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
+			playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
 
-		auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
-		m_characters.push_back(std::move(playerCharacter));
-
+			auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
+			m_characters.push_back(std::move(playerCharacter));
+		}
 
 		// todo make a pointer to animation then if null don't do it later or use optional
 		std::vector<Animation> enemyCharacterAnim;
 		// todo make cutoff 4 parameters from the 4 sides
 		// todo might need to leave more space for animations to not look weird
-		sf::Vector2f cutoff(35.f, 70.f);
-		enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
-		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, false, cutoff);
-		enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, { 2.f, 2.f }, true, cutoff);
-		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, false, cutoff);
-		enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, { 2.f, 2.f }, true, cutoff);
-		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {};
-		enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
-		enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, { 2.f, 2.f }, true, cutoff);
+		{
+			TextureChangeInfo info;
+			info.leftCut = 35.f;
+			info.upCut = 70.f;
+			info.scale = { 2.f, 2.f };
 
-		auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 + cutoff.y * 2}, enemyCharacterAnim);
-		m_characters.push_back(std::move(enemyCharacter));
+			enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
+			enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, false);
+			enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, true);
+			enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, false);
+			enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, true);
+			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {};
+			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
+			enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, info, true);
+
+			auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim);
+			m_characters.push_back(std::move(enemyCharacter));
+		}
 	}
 
 	void Game::handleKeyboardEvents(float dt)

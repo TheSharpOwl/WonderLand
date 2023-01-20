@@ -78,6 +78,7 @@ namespace wonderland {
 			// first character (which the player controls)
 			TextureChangeInfo info;
 			info.scale = { 2.f, 2.f };
+			info.upCut = 5.f;
 			std::vector<Animation> playerCharacterAnim;
 			playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
 			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info);
@@ -100,6 +101,7 @@ namespace wonderland {
 			TextureChangeInfo info;
 			info.leftCut = 35.f;
 			info.upCut = 70.f;
+			info.rightCut = 35.f;
 			info.scale = { 2.f, 2.f };
 
 			enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));

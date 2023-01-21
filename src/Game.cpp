@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "Level.hpp"
 #include "Character.hpp"
+#include "Math.hpp"
 
 #include <chrono>
 #include <memory>
@@ -54,6 +55,8 @@ namespace wonderland {
 				m_characters[i]->update(dt);
 			}
 
+			handleCollisions(dt);
+
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
@@ -78,7 +81,7 @@ namespace wonderland {
 			// first character (which the player controls)
 			TextureChangeInfo info;
 			info.scale = { 2.f, 2.f };
-			info.upCut = 5.f;
+			info.upCut = 3.f;
 			std::vector<Animation> playerCharacterAnim;
 			playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
 			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info);
@@ -89,7 +92,7 @@ namespace wonderland {
 			playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
 			playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
 
-			auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, CharacterType::Player, playerCharacterAnim);
+			auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f + info.upCut * 2 }, CharacterType::Player, playerCharacterAnim);
 			m_characters.push_back(std::move(playerCharacter));
 		}
 
@@ -143,8 +146,39 @@ namespace wonderland {
 			m_characters[playerIdx]->update(dt);
 	}
 
-	void Game::handleCollisions(float dt)
+	void Game::handleCollisions(float dt) const
 	{
-		// TODO
+		std::vector<size_t> attackers;
+		std::vector<size_t> damaged;
+
+		for(size_t i = 0;i < m_characters.size();i++)
+		{
+			for(size_t j = i + 1; j < m_characters.size();j++)
+			{
+				// todo try removing namespace wonderland
+				if(Wonderland::Math::isOverlapping(m_characters[i]->getCollisionRect(), m_characters[j]->getCollisionRect()))
+				{
+					// TODO later make it separeate attack left or attack right (direction of where the character is attacking)
+					if (m_characters[i]->isAttacking())
+					{
+						attackers.push_back(i);
+						damaged.push_back(j);
+					}
+					if(m_characters[j]->isAttacking())
+					{
+						attackers.push_back(j);
+						damaged.push_back(i);
+					}
+				}
+			}
+		}
+
+		for (auto a : attackers)
+			m_characters[a]->getPoints();
+
+		for (auto d : damaged)
+			m_characters[d]->getDamage();
+
+
 	}
 }

@@ -42,13 +42,20 @@ namespace wonderland
 			rt.draw(m_sprite);
 			// todo add such macros to wiki or readme
 			// todo change color when character collides with another
-			// todo seems custom size for collision is needeed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
+			// todo seems custom size for collision is needed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
 #ifdef DEBUG_PHYSICS
 			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
 			rect.setPosition(m_sprite.getPosition());
 			rect.setOutlineThickness(1.f);
-			rect.setOutlineColor(sf::Color(127, 255, 0));
 			rect.setFillColor(sf::Color(0.f, 0.f, 0.f, 0.f));
+
+			if(m_isGettingDamage)
+				rect.setOutlineColor(sf::Color(255, 0, 0)); // red
+			else if(m_isGettingPoints)
+				rect.setOutlineColor(sf::Color(2240, 230, 140)); // yellow
+			else
+				rect.setOutlineColor(sf::Color(127, 255, 0)); // green
+
 			rt.draw(rect);
 #endif
 		}
@@ -62,6 +69,9 @@ namespace wonderland
 
 		void update(float dt)
 		{
+			m_isGettingDamage = false;
+			m_isGettingPoints = false;
+
 			if(m_vel.y < 0) // we are jumping
 			{
 				if (m_vel.x < 0.f)
@@ -122,6 +132,29 @@ namespace wonderland
 			//m_animations[iAnimation].update(dt);
 			//m_animations[iAnimation].applyToSprite(m_sprite);
 		}
+
+		sf::Rect<float> getCollisionRect()
+		{
+			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
+			rect.setPosition(m_sprite.getPosition());
+
+			return rect.getGlobalBounds();
+		}
+
+		bool isAttacking()
+		{
+			return currentAnimationType == AnimationType::AttackLeft || currentAnimationType == AnimationType::AttackRight;
+		}
+
+		void getPoints()
+		{
+			m_isGettingPoints = true;
+		}
+
+		void getDamage()
+		{
+			m_isGettingDamage = true;
+		}
 	protected:
 		CharacterType m_type;
 		// todo I think speed should be different from character to another so no static here and passed to ctor
@@ -131,6 +164,9 @@ namespace wonderland
 		sf::Vector2f m_vel = { 0.0f,0.0f };
 		sf::Sprite m_sprite;
 		float m_gravity = 1.1f;
+		bool m_isGettingDamage = false;
+		bool m_isGettingPoints = false;
+		// todo add m_
 		AnimationType currentAnimationType;
 		// Todo support many animations for now just one type (move right)
 		std::vector<Animation> m_animations;

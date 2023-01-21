@@ -22,7 +22,7 @@ namespace wonderland
 		static constexpr  float screenWidth = 1024;
 		static constexpr float screenHeight = 720;
 
-	private:
+	protected:
 
 		std::unique_ptr<sf::RenderWindow> m_window;
 
@@ -32,7 +32,7 @@ namespace wonderland
 
 		void handleKeyboardEvents(float dt);
 
-		void handleCollisions(float dt);
+		void handleCollisions(float dt) const;
 
 		// todo check why unique ptr is not working still (( ?!!!!!!!
 		// always the character we control is at index zero

@@ -19,11 +19,18 @@
 
 namespace wonderland
 {
+	enum class CharacterType
+	{
+		Player,
+		Enemy,
+		Count
+	};
+
 	class Character
 	{
 	public:
 		// todo support adding a character using json file (need nlohman::json for that)
-		Character(sf::Vector2f pos, std::vector<Animation> animations) : m_startPos(std::move(pos)), m_animations(std::move(animations))
+		Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations) : m_startPos(pos), m_type(type), m_animations(std::move(animations))
 		{
 			m_pos = m_startPos;
 		}
@@ -36,7 +43,6 @@ namespace wonderland
 			// todo add such macros to wiki or readme
 			// todo change color when character collides with another
 			// todo seems custom size for collision is needeed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
-#define DEBUG_PHYSICS
 #ifdef DEBUG_PHYSICS
 			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
 			rect.setPosition(m_sprite.getPosition());
@@ -116,7 +122,8 @@ namespace wonderland
 			//m_animations[iAnimation].update(dt);
 			//m_animations[iAnimation].applyToSprite(m_sprite);
 		}
-	private:
+	protected:
+		CharacterType m_type;
 		// todo I think speed should be different from character to another so no static here and passed to ctor
 		static constexpr float speed = 150.f;
 		sf::Vector2f m_pos;

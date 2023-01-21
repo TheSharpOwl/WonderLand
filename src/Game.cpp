@@ -89,7 +89,7 @@ namespace wonderland {
 			playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
 			playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
 
-			auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, playerCharacterAnim);
+			auto playerCharacter = std::make_unique<Character>(sf::Vector2f{ 100.f, 500.f }, CharacterType::Player, playerCharacterAnim);
 			m_characters.push_back(std::move(playerCharacter));
 		}
 
@@ -113,7 +113,7 @@ namespace wonderland {
 			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
 			enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, info, true);
 
-			auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim);
+			auto enemyCharacter = std::make_unique<Character>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, CharacterType::Enemy, enemyCharacterAnim);
 			m_characters.push_back(std::move(enemyCharacter));
 		}
 	}
@@ -141,5 +141,10 @@ namespace wonderland {
 			m_characters[playerIdx]->jump(dt);
 		else
 			m_characters[playerIdx]->update(dt);
+	}
+
+	void Game::handleCollisions(float dt)
+	{
+		// TODO
 	}
 }

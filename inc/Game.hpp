@@ -19,8 +19,8 @@ namespace wonderland
 		void run();
 
 		// todo rename to windowWidth...etc
-		static constexpr  float screenWidth = 1024.f;
-		static constexpr float screenHeight = 720.f;
+		static constexpr  float screenWidth = 1024;
+		static constexpr float screenHeight = 720;
 
 	private:
 
@@ -31,6 +31,8 @@ namespace wonderland
 		void loadCharacters();
 
 		void handleKeyboardEvents(float dt);
+
+		void handleCollisions(float dt);
 
 		// todo check why unique ptr is not working still (( ?!!!!!!!
 		// always the character we control is at index zero

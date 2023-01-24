@@ -69,8 +69,7 @@ namespace wonderland
 
 		void update(float dt)
 		{
-			m_isGettingDamage = false;
-			m_isGettingPoints = false;
+			// TODO BUG those should be reset everywhere not only here
 
 			if(m_vel.y < 0) // we are jumping
 			{
@@ -131,6 +130,13 @@ namespace wonderland
 			//auto const iAnimation = animationTypeToInt(currentAnimationType);
 			//m_animations[iAnimation].update(dt);
 			//m_animations[iAnimation].applyToSprite(m_sprite);
+		}
+
+		// should be called first to reset the data to its initial value before the frame starts (if needed to be reset)
+		void reset()
+		{
+			m_isGettingDamage = false;
+			m_isGettingPoints = false;
 		}
 
 		sf::Rect<float> getCollisionRect()

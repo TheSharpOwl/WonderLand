@@ -1,6 +1,6 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
-
+// TODO https://github.com/SFML/SFML/wiki/Source:-Simple-Collision-Detection-for-SFML-2
 namespace Wonderland::Math
 {
     //bool isPointInside(sf::Vector2f p, sf::Rect<float> r)

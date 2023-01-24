@@ -48,10 +48,12 @@ namespace wonderland {
 			}
 
 
+			m_characters[playerIdx]->reset();
 			handleKeyboardEvents(dt);
 
 			for(std::size_t i = 1 ; i < m_characters.size();i++)
 			{
+				m_characters[i]->reset();
 				m_characters[i]->update(dt);
 			}
 

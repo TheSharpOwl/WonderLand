@@ -3,6 +3,9 @@
 // With help of:
 // https://github.com/planetchili/sfml_sprite/blob/master/SFMLspriteAnim/Source.cpp
 #include <iostream>
+
+#include "SFML/Graphics.hpp"
+
 namespace wonderland {
 	// For now this class will load the animation from many images with names' pattern X1,X2,X3..etc
 	// Later might need to support sprite sheets

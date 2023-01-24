@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "Level.hpp"
 #include "Character.hpp"
+#include "Bot.hpp"
 #include "Math.hpp"
 
 #include <chrono>

@@ -13,7 +13,7 @@ if (NOT SFML_PATH)
     set(SFML_PATH "${PROJECT_SOURCE_DIR}/modules/SFML-2.5.1")
 endif()
 message(STATUS "HERe is the list ${ALL_LIB_FILES_IN_SFML}")
-add_executable(main "${WONDERLAND_HEADERS}"  "${WONDERLAND_SRC}" main.cpp)
+add_executable(main "${WONDERLAND_HEADERS}" "${WONDERLAND_SRC}" main.cpp)
 
 # TODO link with sfml and check whether it works
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)

@@ -11,9 +11,16 @@ namespace wonderland
     class Bot : public Character
     {
     public:
-        Bot(sf::Vector2f pos, std::vector<Animation> animations) : Character(pos, CharacterType::Enemy, std::move(animations))
-        {
-        }
+        Bot(sf::Vector2f pos, std::vector<Animation> animations);
+
+        virtual void update(float dt) override;
+
+    protected:
+
+        inline static float kSecondsBetweenAttacks = 1.2f;
+
+        float m_lastAttackTime = 0.f;
+
     };
 }
-#endif // !BOT_HE#define BOT_H
+#endif // !BOT_H

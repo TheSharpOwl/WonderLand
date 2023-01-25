@@ -29,14 +29,14 @@ namespace wonderland
 
 		void setDirection(sf::Vector2f di);
 
-		void update(float dt);
+		virtual void update(float dt);
 		// todo maybe apply gravity even while attacking?
 		void attack(float dt);
 
 		void jump(float dt);
 
 		// should be called first to reset the data to its initial value before the frame starts (if needed to be reset)
-		void reset();
+		virtual void reset();
 
 		sf::Rect<float> getCollisionRect();
 

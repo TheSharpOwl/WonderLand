@@ -34,7 +34,6 @@ namespace wonderland
 
 		void handleCollisions(float dt) const;
 
-		// todo check why unique ptr is not working still (( ?!!!!!!!
 		// always the character we control is at index zero
 		std::vector<std::unique_ptr<Character>> m_characters;
 

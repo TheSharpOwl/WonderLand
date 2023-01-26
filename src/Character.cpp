@@ -48,23 +48,25 @@ namespace wonderland
 
 		void Character::update(float dt)
 		{
-			if(m_vel.y < 0) // we are jumping
+			if(!isAttacking()) // if attack set the state already we don't change it
 			{
-				if (m_vel.x < 0.f)
-					currentAnimationType = AnimationType::JumpLeft;
-				else
-					currentAnimationType = AnimationType::JumpRight;
+				if (m_vel.y < 0) // we are jumping
+				{
+					if (m_vel.x < 0.f)
+						currentAnimationType = AnimationType::JumpLeft;
+					else
+						currentAnimationType = AnimationType::JumpRight;
+				}
+				else // we are on the ground
+				{
+					if (m_vel.x > 0.f)
+						currentAnimationType = AnimationType::WalkingRight;
+					else if (m_vel.x < 0.f)
+						currentAnimationType = AnimationType::WalkingLeft;
+					else
+						currentAnimationType = AnimationType::Idle;
+				}
 			}
-			else // we are on the ground
-			{
-				if (m_vel.x > 0.f)
-					currentAnimationType = AnimationType::WalkingRight;
-				else if (m_vel.x < 0.f)
-					currentAnimationType = AnimationType::WalkingLeft;
-				else
-					currentAnimationType = AnimationType::Idle;
-			}
-
 			m_pos += m_vel * dt;
 			// todo make it ground not start pos and static const for example or something in Level and take it from there
 			if(m_pos.y > m_startPos.y)
@@ -86,12 +88,7 @@ namespace wonderland
 			else // because by default our character looks at right 
 				currentAnimationType = AnimationType::AttackRight;
 
-			m_vel.y = 0.f;
-
-			// maybe put this part in some function for avoiding duplication todo
-			auto const iAnimation = animationTypeToInt(currentAnimationType);
-			m_animations[iAnimation].update(dt);
-			m_animations[iAnimation].applyToSprite(m_sprite);
+			m_vel.y = m_vel.x = 0.f; // no movement while attacking
 		}
 
 		void Character::jump(float dt)
@@ -99,20 +96,13 @@ namespace wonderland
 			// negative because sfml y starts from 0 up and increases down
 			if(m_pos.y == m_startPos.y) // to prevent infinite jumping
 				m_vel.y = -350.f; // todo this is temp
-			update(dt);
-			//currentAnimationType = AnimationType::JumpRight;
-
-
-			//// maybe put this part in some function for avoiding duplication todo
-			//auto const iAnimation = animationTypeToInt(currentAnimationType);
-			//m_animations[iAnimation].update(dt);
-			//m_animations[iAnimation].applyToSprite(m_sprite);
 		}
 
 		void Character::reset()
 		{
 			m_isGettingDamage = false;
 			m_isGettingPoints = false;
+			currentAnimationType = AnimationType::Idle;
 		}
 
 		sf::Rect<float> Character::getCollisionRect()

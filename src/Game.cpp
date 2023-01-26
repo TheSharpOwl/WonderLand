@@ -136,17 +136,15 @@ namespace wonderland {
 			dir.x = -1.f;
 		}
 
-
 		m_characters[playerIdx]->setDirection(dir);
-
 
 		// todo this is temp find better solution
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 			m_characters[playerIdx]->attack(dt);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			m_characters[playerIdx]->jump(dt);
-		else
-			m_characters[playerIdx]->update(dt);
+
+		m_characters[playerIdx]->update(dt);
 	}
 
 	void Game::handleCollisions(float dt) const

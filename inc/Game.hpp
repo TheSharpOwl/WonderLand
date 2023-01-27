@@ -35,7 +35,7 @@ namespace wonderland
 		void handleCollisions(float dt) const;
 
 		// always the character we control is at index zero
-		std::vector<std::unique_ptr<Character>> m_characters;
+		std::vector<std::shared_ptr<Character>> m_characters;
 
 		static constexpr int playerIdx = 0;
 	};

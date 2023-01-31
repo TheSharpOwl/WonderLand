@@ -49,7 +49,7 @@ namespace wonderland
 	protected:
 		CharacterType m_type;
 		// todo I think speed should be different from character to another so no static here and passed to ctor
-		static constexpr float speed = 150.f;
+		float speed = 150.f;
 		sf::Vector2f m_pos;
 		sf::Vector2f m_startPos;
 		sf::Vector2f m_vel = { 0.0f,0.0f };

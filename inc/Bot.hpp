@@ -18,12 +18,17 @@ namespace wonderland
         virtual void update(float dt) override;
 
         void updatePlayerRect(sf::Rect<float> playerRect);
+
     protected:
 
         inline static float kSecondsBetweenAttacks = 1.2f;
-
+        int m_attackDurationCount = 2000;
         float m_lastAttackTime = 0.f;
+
         sf::Rect<float> m_playerRect;
+
+        // todo change this depending on difficulty
+        float const timeBetweenAttacks = 1.f;
     };
 }
 #endif // !BOT_H

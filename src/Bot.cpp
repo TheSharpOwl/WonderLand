@@ -13,32 +13,52 @@ namespace wonderland
 		bool playerOnLeft = (m_playerRect.left + m_playerRect.width / 2) < (getCollisionRect().left + getCollisionRect().width/2);
 		bool collides = m_playerRect.intersects(getCollisionRect());
 
-		if(playerOnLeft)
-		{
-			if (collides)
-			{
+		static float lastAttackTime = 0.f;
+		static float rightNow = 0.f;
+		static int attackAnimationPlay = 0.f;
+		rightNow += dt;
+
+
+		bool canAttack = lastAttackTime + timeBetweenAttacks <= rightNow && collides;
+
+
+		// -1 for left and 1 for right
+		auto attack = [this](int direction) {
+
+			if (direction < 0)
 				currentAnimationType = AnimationType::AttackLeft;
-				setDirection({ 0,0 });
-			}
 			else
-			{
-				currentAnimationType = AnimationType::WalkingLeft;
-				setDirection({ -1,0 });
-			}
-		}
-		else
-		{
-			if (collides)
-			{
 				currentAnimationType = AnimationType::AttackRight;
-				setDirection({ 0,0 });
-			}
-			else
+			setDirection({ 0,0 });
+
+			attackAnimationPlay++;
+			if (attackAnimationPlay == m_attackDurationCount)
 			{
-				currentAnimationType = AnimationType::WalkingRight;
-				setDirection({ 1,0 });
+				lastAttackTime = rightNow;
+				attackAnimationPlay = 0;
 			}
-		}
+		};
+
+		// -1 for left and 1 for right
+		auto walk = [this](int direction) {
+
+			if (direction < 0)
+				currentAnimationType = AnimationType::WalkingLeft;
+			else
+				currentAnimationType = AnimationType::WalkingRight;
+
+			setDirection({ static_cast<float>(direction),0 });
+		};
+
+		// suppose player is on the right side
+		int direction = 1;
+		if (playerOnLeft)
+			direction = -1;
+
+		if (canAttack)
+			attack(direction);
+		else
+			walk(direction);
 
 		Base::update(dt);
 	}

@@ -38,18 +38,21 @@ namespace wonderland
 		// should be called first to reset the data to its initial value before the frame starts (if needed to be reset)
 		virtual void reset();
 
-		sf::Rect<float> getCollisionRect();
+		sf::Rect<float> getCollisionRect() const;
 
-		bool isAttacking();
+		bool isAttacking() const;
 
 		void getPoints();
 
 		void getDamage();
-		
+
+		int getHp() const;
+
 	protected:
 		CharacterType m_type;
 		// todo I think speed should be different from character to another so no static here and passed to ctor
 		float speed = 150.f;
+		int m_hp; // health percentage
 		sf::Vector2f m_pos;
 		sf::Vector2f m_startPos;
 		sf::Vector2f m_vel = { 0.0f,0.0f };

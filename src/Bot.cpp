@@ -50,7 +50,7 @@ namespace wonderland
 			setDirection({ static_cast<float>(direction),0 });
 		};
 
-		// suppose player is on the right side
+		// suppose the player is on the right side
 		int direction = 1;
 		if (playerOnLeft)
 			direction = -1;

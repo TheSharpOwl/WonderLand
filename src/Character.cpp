@@ -10,18 +10,20 @@
 
 namespace wonderland
 {
-		Character::Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations) : m_startPos(pos), m_type(type), m_animations(std::move(animations))
-		{
-			m_pos = m_startPos;
-		}
+	Character::Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations) : m_startPos(pos),
+																									m_type(type),
+																									m_animations(std::move(animations)),
+																									m_hp(100)
+	{
+		m_pos = m_startPos;
+	}
 
-
-		void Character::draw(sf::RenderTarget& rt) const
-		{
-			rt.draw(m_sprite);
-			// todo add such macros to wiki or readme
-			// todo change color when character collides with another
-			// todo seems custom size for collision is needed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
+	void Character::draw(sf::RenderTarget &rt) const
+	{
+		rt.draw(m_sprite);
+		// todo add such macros to wiki or readme
+		// todo change color when character collides with another
+		// todo seems custom size for collision is needed (because skeleton box it too big) or seems something else for skeleton because without scale it looks same size but wrong pos
 #ifdef DEBUG_PHYSICS
 			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
 			rect.setPosition(m_sprite.getPosition());
@@ -37,7 +39,7 @@ namespace wonderland
 
 			rt.draw(rect);
 #endif
-		}
+	}
 
 		void Character::setDirection(sf::Vector2f di)
 		{
@@ -105,7 +107,7 @@ namespace wonderland
 			currentAnimationType = AnimationType::Idle;
 		}
 
-		sf::Rect<float> Character::getCollisionRect()
+		sf::Rect<float> Character::getCollisionRect() const
 		{
 			sf::RectangleShape rect(sf::Vector2f(m_sprite.getTextureRect().width * m_sprite.getScale().x, m_sprite.getTextureRect().height * m_sprite.getScale().y));
 			rect.setPosition(m_sprite.getPosition());
@@ -113,7 +115,7 @@ namespace wonderland
 			return rect.getGlobalBounds();
 		}
 
-		bool Character::isAttacking()
+		bool Character::isAttacking() const
 		{
 			return currentAnimationType == AnimationType::AttackLeft || currentAnimationType == AnimationType::AttackRight;
 		}
@@ -126,5 +128,10 @@ namespace wonderland
 		void Character::getDamage()
 		{
 			m_isGettingDamage = true;
+		}
+
+		int Character::getHp() const
+		{
+			return m_hp;
 		}
 }

@@ -3,6 +3,7 @@
 #include "Character.hpp"
 #include "Bot.hpp"
 #include "Math.hpp"
+#include "UI.hpp"
 
 #include <chrono>
 #include <memory>
@@ -74,6 +75,8 @@ namespace wonderland {
 
 			// draw player in the end to appear above every other character in case of overlapping
 			m_characters[playerIdx]->draw(*m_window);
+
+			UI::draw(*m_window, m_characters, playerIdx);
 
 			m_window->display();
 		}

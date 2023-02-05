@@ -1,12 +1,17 @@
 #include <vector>
 #include <memory>
+#include "SFML/Graphics.hpp"
 
 namespace wonderland {
 
     class Character;
     class UI {
-        void draw(std::vector<std::shared_ptr<Characters>) {
+    public:
+        // Todo make UI a singelton class maybe?
+        static void draw(sf::RenderTarget &rt, std::vector<std::shared_ptr<Character>>, int playerIdx);
 
-        }
+        static sf::Sprite sprite;
+        static sf::Texture playerHpTexture;
+        static bool loadedHpTexture;
     };
 }

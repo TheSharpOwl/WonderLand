@@ -12,6 +12,7 @@ namespace wonderland {
 
         static sf::Sprite sprite;
         static sf::Texture playerHpTexture;
+        static sf::Texture reversePlayerHpTexture;
         static bool loadedHpTexture;
     };
 }

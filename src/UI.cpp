@@ -31,5 +31,36 @@ namespace wonderland {
         sprite.setTextureRect(sf::Rect<int>(temp, 0, reversePlayerHpTexture.getSize().x - temp, reversePlayerHpTexture.getSize().y));
 
         rt.draw(sprite);
+
+        for (int i = 0; i < characters.size();i++)
+        {
+            if(i == playerIdx)
+                continue;
+
+
+            const int yOffset = 22;
+            const int xOffset = characters[i]->getCollisionRect().width/6;
+            const int ySize = 20;
+            const int xSize = 80;
+            {
+                // the inside hp
+
+                sf::RectangleShape rect(sf::Vector2f(xSize * (characters[i]->getHp() / 100.f), ySize));
+                rect.setPosition(characters[i]->getCollisionRect().left + xOffset, characters[i]->getCollisionRect().top - yOffset);
+                rect.setOutlineThickness(0.f);
+                rect.setFillColor(sf::Color(255.f, 0.f, 0.f));
+                rt.draw(rect);
+            }
+
+            {
+                // the border
+                sf::RectangleShape rect(sf::Vector2f(xSize, ySize));
+                rect.setPosition(characters[i]->getCollisionRect().left + xOffset, characters[i]->getCollisionRect().top - yOffset);
+                rect.setOutlineThickness(3.f);
+                rect.setFillColor(sf::Color(0.f, 0.f, 0.f, 1.f));
+                rect.setOutlineColor(sf::Color(0, 0, 0)); // black
+                rt.draw(rect);
+            	}
+        }
     }
 }

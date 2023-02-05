@@ -21,7 +21,7 @@ namespace wonderland
 	{
 	public:
 		// todo support adding a character using json file (need nlohman::json for that)
-		Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations);
+		Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations, int strength);
 
 		virtual ~Character() = default;
 
@@ -42,11 +42,19 @@ namespace wonderland
 
 		bool isAttacking() const;
 
-		void getPoints();
+		int getStrength() const { return m_strength; }
 
-		void getDamage();
+		void getPoints(int points);
+
+		void getDamage(int dmg);
 
 		int getHp() const;
+
+		bool isAnimationFinished()
+		{
+			auto const iAnimation = animationTypeToInt(currentAnimationType);
+			return m_animations[iAnimation].isAnimationFinished();
+		}
 
 	protected:
 		CharacterType m_type;
@@ -60,6 +68,7 @@ namespace wonderland
 		float m_gravity = 1.1f;
 		bool m_isGettingDamage = false;
 		bool m_isGettingPoints = false;
+		int m_strength;
 		// todo add m_
 		AnimationType currentAnimationType;
 		// Todo support many animations for now just one type (move right)

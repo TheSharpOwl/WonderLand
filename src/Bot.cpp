@@ -2,7 +2,7 @@
 
 namespace wonderland
 {
-	Bot::Bot(sf::Vector2f pos, std::vector<Animation> animations) : Character(pos, CharacterType::Enemy, std::move(animations))
+	Bot::Bot(sf::Vector2f pos, std::vector<Animation> animations, int strength) : Character(pos, CharacterType::Enemy, std::move(animations), strength)
 	{
 		// change the value for the bot
 		speed = 100.f;

@@ -112,12 +112,24 @@ namespace wonderland {
 
 		void update(float dt)
 		{
+			m_finishedAnimation = false;
 			m_time += dt;
+			int oldIFrame = m_iFrame;
+			int count = 0;
 			while (m_time >= m_holdTime)
 			{
 				m_time -= m_holdTime;
 				advance();
+				count++;
 			}
+			// that means we finished a cycle of animation at least once (if the computer lags and more cycles happen we count it as 1)
+			if (oldIFrame + count >= m_frames.size())
+				m_finishedAnimation = true;
+		}
+
+		bool isAnimationFinished()
+		{
+			return m_finishedAnimation;
 		}
 	private:
 		void advance()
@@ -138,6 +150,7 @@ namespace wonderland {
 		int m_iFrame = 0;
 		float m_time = 0.0f;
 		bool m_reverseX;
+		bool m_finishedAnimation;
 	};
 }
 #endif //  ANIMATION_HPP

@@ -13,7 +13,7 @@ namespace wonderland
     public:
         using Base = Character;
 
-        Bot(sf::Vector2f pos, std::vector<Animation> animations);
+        Bot(sf::Vector2f pos, std::vector<Animation> animations, int strength);
 
         virtual void update(float dt) override;
 

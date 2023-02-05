@@ -10,10 +10,10 @@
 
 namespace wonderland
 {
-	Character::Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations) : m_startPos(pos),
+	Character::Character(sf::Vector2f pos, CharacterType type, std::vector<Animation> animations, int strength) : m_startPos(pos),
 																									m_type(type),
 																									m_animations(std::move(animations)),
-																									m_hp(100)
+																									m_hp(100), m_strength(strength)
 	{
 		m_pos = m_startPos;
 	}
@@ -120,14 +120,16 @@ namespace wonderland
 			return currentAnimationType == AnimationType::AttackLeft || currentAnimationType == AnimationType::AttackRight;
 		}
 
-		void Character::getPoints()
+		void Character::getPoints(int points)
 		{
 			m_isGettingPoints = true;
+		// todo add points here
 		}
 
-		void Character::getDamage()
+		void Character::getDamage(int dmg)
 		{
 			m_isGettingDamage = true;
+			m_hp = std::max(0, m_hp-dmg);
 		}
 
 		int Character::getHp() const

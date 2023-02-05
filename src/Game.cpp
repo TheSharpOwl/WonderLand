@@ -7,6 +7,7 @@
 
 #include <chrono>
 #include <memory>
+#include <utility>
 
 namespace wonderland {
 	Game::Game()
@@ -100,7 +101,8 @@ namespace wonderland {
 			playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
 			playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
 
-			auto playerCharacter = std::make_shared<Character>(sf::Vector2f{ 100.f, 500.f + info.upCut * 2 }, CharacterType::Player, playerCharacterAnim);
+			const int playerStrength = 25;
+			auto playerCharacter = std::make_shared<Character>(sf::Vector2f{ 100.f, 500.f + info.upCut * 2 }, CharacterType::Player, playerCharacterAnim, playerStrength);
 			m_characters.push_back(std::move(playerCharacter));
 		}
 
@@ -123,7 +125,8 @@ namespace wonderland {
 			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
 			enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, info, true);
 
-			auto enemyCharacter = std::make_shared<Bot>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim);
+			const int enemyStrength = 10;
+			auto enemyCharacter = std::make_shared<Bot>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim, enemyStrength);
 			m_characters.push_back(std::move(enemyCharacter));
 		}
 	}
@@ -154,7 +157,12 @@ namespace wonderland {
 	void Game::handleCollisions(float dt) const
 	{
 		std::vector<size_t> attackers;
-		std::vector<size_t> damaged;
+		// pair <index of damaged guy, how much damage>
+		std::vector<std::pair<size_t, int>> damaged;
+
+		static int64_t counter = 1;
+
+		counter %= 100000000LL;// to avoid overflow I think it's useless but ok better safe than suffering with debugging lol
 
 		for(size_t i = 0;i < m_characters.size();i++)
 		{
@@ -164,26 +172,26 @@ namespace wonderland {
 				if(Wonderland::Math::isOverlapping(m_characters[i]->getCollisionRect(), m_characters[j]->getCollisionRect()))
 				{
 					// TODO later make it separeate attack left or attack right (direction of where the character is attacking)
-					if (m_characters[i]->isAttacking())
+					if (m_characters[i]->isAttacking() && m_characters[i]->isAnimationFinished())
 					{
 						attackers.push_back(i);
-						damaged.push_back(j);
+						damaged.push_back(std::make_pair( j, m_characters[i]->getStrength()));
 					}
-					if(m_characters[j]->isAttacking())
+					if(m_characters[j]->isAttacking() && m_characters[j]->isAnimationFinished())
 					{
 						attackers.push_back(j);
-						damaged.push_back(i);
+						damaged.push_back(std::make_pair( i, m_characters[j]->getStrength() ));
 					}
 				}
 			}
 		}
 
 		for (auto a : attackers)
-			m_characters[a]->getPoints();
+			m_characters[a]->getPoints(1); // todo random number
 
 		for (auto d : damaged)
-			m_characters[d]->getDamage();
+			m_characters[d.first]->getDamage(d.second);
 
-
+		counter++;
 	}
 }

@@ -22,8 +22,20 @@ target_include_directories(main PUBLIC "${SFML_PATH}/include")
 message(STATUS "${SFML_PATH}")
 # TODO only add required lib files
 # Add all files which end with .lib (BAD SOLUTION BUT now just want it to work)
-file(GLOB ALL_LIB_FILES_IN_SFML
-     "${SFML_PATH}/lib/*.lib"
+file(GLOB ALL_SFML_DEBUG_LIB
+"${SFML_PATH}/lib/*-d.lib"
 )
 
-target_link_libraries(main PUBLIC "${ALL_LIB_FILES_IN_SFML}")
+file(GLOB ALL_SFML_Release_LIB
+"${SFML_PATH}/lib/*.lib"
+)
+
+# filter the debug ones from the release list
+list(FILTER ALL_SFML_Release_LIB EXCLUDE REGEX ".*\-d.lib$")
+list(FILTER ALL_SFML_Release_LIB EXCLUDE REGEX ".*\-s.lib$")
+
+message(STATUS "Here you go: ${ALL_SFML_DEBUG_LIB}")
+message(STATUS "Here you go: ${ALL_SFML_Release_LIB}")
+target_link_libraries(main PUBLIC 
+"$<$<CONFIG:Debug>:${ALL_SFML_DEBUG_LIB}>"
+"$<$<CONFIG:Release>:${ALL_SFML_Release_LIB}>")

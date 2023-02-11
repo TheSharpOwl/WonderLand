@@ -1,3 +1,5 @@
+#ifndef MATH_H
+#define MATH_H
 #include <cmath>
 #include <SFML/Graphics.hpp>
 // TODO https://github.com/SFML/SFML/wiki/Source:-Simple-Collision-Detection-for-SFML-2
@@ -24,3 +26,4 @@ namespace Wonderland::Math
     }
 
 }
+#endif

@@ -19,6 +19,7 @@ add_executable(main "${WONDERLAND_HEADERS}" "${WONDERLAND_SRC}" main.cpp)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)
 target_include_directories(main PUBLIC "${PROJECT_SOURCE_DIR}/inc")
 target_include_directories(main PUBLIC "${SFML_PATH}/include")
+message(STATUS "${SFML_PATH}")
 # TODO only add required lib files
 # Add all files which end with .lib (BAD SOLUTION BUT now just want it to work)
 file(GLOB ALL_LIB_FILES_IN_SFML

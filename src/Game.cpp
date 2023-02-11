@@ -4,6 +4,7 @@
 #include "Bot.hpp"
 #include "Math.hpp"
 #include "UI.hpp"
+#include "Audio.hpp"
 
 #include <chrono>
 #include <memory>
@@ -33,6 +34,7 @@ namespace wonderland {
 		// todo maybe dependency design is wrong
 		// Todo add background music here and add it in level
 		Level levelOne("Level 1", "../assets/game_background_1.png", "");
+
 		while (m_window->isOpen())
 		{
 			m_restarted = false;

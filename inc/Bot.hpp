@@ -22,13 +22,13 @@ namespace wonderland
     protected:
 
         inline static float kSecondsBetweenAttacks = 1.2f;
-        int m_attackDurationCount = 2000;
+        int m_attackDurationCount = 1000;
         float m_lastAttackTime = 0.f;
 
         sf::Rect<float> m_playerRect;
 
         // todo change this depending on difficulty
-        float const timeBetweenAttacks = 1.f;
+        float const timeBetweenAttacks = 5.f;
     };
 }
 #endif // !BOT_H

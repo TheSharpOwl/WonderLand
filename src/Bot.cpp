@@ -19,8 +19,11 @@ namespace wonderland
 		rightNow += dt;
 
 
-		bool canAttack = lastAttackTime + timeBetweenAttacks <= rightNow && collides;
-
+		bool canAttack = lastAttackTime + timeBetweenAttacks < rightNow && collides;
+		if(canAttack)
+		{
+			std::cout << "Can Attack\n";
+		}
 
 		// -1 for left and 1 for right
 		auto attack = [this](int direction) {
@@ -57,9 +60,11 @@ namespace wonderland
 
 		if (canAttack)
 			attack(direction);
+		else if(collides)
+			currentAnimationType = AnimationType::Idle;
 		else
 			walk(direction);
-
+		 
 		Base::update(dt);
 	}
 

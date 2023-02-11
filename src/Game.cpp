@@ -83,6 +83,13 @@ namespace wonderland {
 		}
 	}
 
+	void Game::restart()
+	{
+		m_characters.clear();
+		// todo reset other stuff here too
+		loadCharacters();
+	}
+
 	void Game::loadCharacters()
 	{
 		
@@ -141,6 +148,11 @@ namespace wonderland {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			dir.x = -1.f;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			restart();
 		}
 
 		m_characters[playerIdx]->setDirection(dir);

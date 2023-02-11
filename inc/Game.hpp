@@ -18,6 +18,8 @@ namespace wonderland
 
 		void run();
 
+		void restart();
+
 		// todo rename to windowWidth...etc
 		static constexpr  float screenWidth = 1024;
 		static constexpr float screenHeight = 720;

@@ -20,10 +20,6 @@ namespace wonderland
 
 
 		bool canAttack = lastAttackTime + timeBetweenAttacks < rightNow && collides;
-		if(canAttack)
-		{
-			std::cout << "Can Attack\n";
-		}
 
 		// -1 for left and 1 for right
 		auto attack = [this](int direction) {

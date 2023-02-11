@@ -35,6 +35,8 @@ namespace wonderland {
 		Level levelOne("Level 1", "../assets/game_background_1.png", "");
 		while (m_window->isOpen())
 		{
+			m_restarted = false;
+
 			sf::Event event;
 			while (m_window->pollEvent(event))
 			{
@@ -50,6 +52,12 @@ namespace wonderland {
 				tp = new_tp;
 			}
 
+			if (m_characters[playerIdx]->getHp() == 0)
+			{
+				restart();
+				// no need to set m_restarted to true
+				continue;
+			}
 
 			m_characters[playerIdx]->reset();
 			handleKeyboardEvents(dt);
@@ -57,11 +65,18 @@ namespace wonderland {
 			for(std::size_t i = 1 ; i < m_characters.size();i++)
 			{
 				auto pBot = std::dynamic_pointer_cast<Bot>(m_characters[i]);
+				if (pBot->getHp() == 0)
+				{
+					restart();
+					break;
+				}
 				pBot->reset();
 				pBot->updatePlayerRect(m_characters[playerIdx]->getCollisionRect());
 				pBot->update(dt);
 			}
 
+			if(m_restarted)
+				continue;
 			handleCollisions(dt);
 
 			m_window->clear();
@@ -85,6 +100,7 @@ namespace wonderland {
 
 	void Game::restart()
 	{
+		m_restarted = true;
 		m_characters.clear();
 		// todo reset other stuff here too
 		loadCharacters();

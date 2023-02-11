@@ -40,6 +40,8 @@ namespace wonderland
 		std::vector<std::shared_ptr<Character>> m_characters;
 
 		static constexpr int playerIdx = 0;
+
+		bool m_restarted = false;
 	};
 }
 #endif

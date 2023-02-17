@@ -1,19 +1,36 @@
 #ifndef AUDIO_H
 #define AUDIO_H
-#include <windows.h>
-#pragma comment(lib, "winmm.lib")
+#include <irrKlang.h>
+#include <string>
 
 namespace wonderland
 {
     class Audio
     {
-    public:
-        static void startBackgroundMusic()
-        {
-            PlaySound("../assets/xDeviruchi - Decisive Battle.wav", NULL, SND_LOOP | SND_ASYNC);
-        }
+    protected:
+        Audio() = default;
 
-    private:
+        ~Audio();
+
+        // todo use unique_ptr and remove dctor
+        static irrklang::ISoundEngine* ms_engine;
+
+        static inline const std::string kBackgroundMusicPath = "../assets/xDeviruchi - Decisive Battle.wav";
+
+    public:
+
+        Audio(Audio& other) = delete;
+        void operator= (const Audio& other) = delete;
+
+
+        // seems no need to get the instance from outside so no method for that for now
+
+        static void createEngine();
+
+
+        static void startBackgroundMusic();
+
     };
+
 }
 #endif

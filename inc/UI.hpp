@@ -10,6 +10,7 @@ namespace wonderland {
         // Todo make UI a singelton class maybe?
         static void draw(sf::RenderTarget &rt, std::vector<std::shared_ptr<Character>>, int playerIdx);
 
+        static void showControls(sf::RenderTarget& rt);
         static sf::Sprite sprite;
         static sf::Texture playerHpTexture;
         static sf::Texture reversePlayerHpTexture;

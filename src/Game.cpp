@@ -95,6 +95,8 @@ namespace wonderland {
 			m_characters[playerIdx]->draw(*m_window);
 
 			UI::draw(*m_window, m_characters, playerIdx);
+			// just to test
+			//UI::showControls(*m_window);
 
 			m_window->display();
 		}

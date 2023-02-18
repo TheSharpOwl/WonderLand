@@ -63,4 +63,31 @@ namespace wonderland {
             	}
         }
     }
+
+    void UI::showControls(sf::RenderTarget& rt)
+    {
+        // load the texture
+        sf::Texture temp;
+        temp.loadFromFile("../assets/Keyboard Letters and Symbols.png");
+        std::vector<std::unique_ptr<sf::Sprite>> tSprite;
+        // 8 * 14
+        // 128 * 244
+        std::vector<std::pair<int, int>> buttonPositions = { {0,0}, {128 / 8, 0}, {128 / 8 * 2, 0}, {128 / 8 * 3, 0}, {128/8 * 5, 224/14 * 2} };
+
+        tSprite.resize(buttonPositions.size());
+
+        for(int i =  0 ; i < buttonPositions.size();i ++)
+        {
+            tSprite[i] = std::make_unique<sf::Sprite>();
+            tSprite[i]->setTexture(temp);
+            tSprite[i]->setTextureRect(sf::IntRect(buttonPositions[i].first, buttonPositions[i].second, 128 / 8, 224 / 14));
+            tSprite[i]->setScale(10.f, 10.f);
+            tSprite[i]->setPosition(sf::Vector2f((i % 4) * 200, (i/4 + 1) * 200));
+            rt.draw(*tSprite[i]);
+        }
+
+        // todo next set position 
+
+
+    }
 }

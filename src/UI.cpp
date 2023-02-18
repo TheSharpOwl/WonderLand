@@ -67,23 +67,44 @@ namespace wonderland {
     void UI::showControls(sf::RenderTarget& rt)
     {
         // load the texture
-        sf::Texture temp;
-        temp.loadFromFile("../assets/Keyboard Letters and Symbols.png");
+        sf::Texture smallButtonsTexture;
+        smallButtonsTexture.loadFromFile("../assets/Keyboard Letters and Symbols.png");
         std::vector<std::unique_ptr<sf::Sprite>> tSprite;
         // 8 * 14
         // 128 * 244
+        // todo add lambda to do calculation based on position
         std::vector<std::pair<int, int>> buttonPositions = { {0,0}, {128 / 8, 0}, {128 / 8 * 2, 0}, {128 / 8 * 3, 0}, {128/8 * 5, 224/14 * 2} };
+
+
 
         tSprite.resize(buttonPositions.size());
 
         for(int i =  0 ; i < buttonPositions.size();i ++)
         {
             tSprite[i] = std::make_unique<sf::Sprite>();
-            tSprite[i]->setTexture(temp);
+            tSprite[i]->setTexture(smallButtonsTexture);
             tSprite[i]->setTextureRect(sf::IntRect(buttonPositions[i].first, buttonPositions[i].second, 128 / 8, 224 / 14));
-            tSprite[i]->setScale(10.f, 10.f);
+            tSprite[i]->setScale(5.f, 5.f);
             tSprite[i]->setPosition(sf::Vector2f((i % 4) * 200, (i/4 + 1) * 200));
             rt.draw(*tSprite[i]);
+        }
+
+
+
+        sf::Texture BigButtonsTexture;
+        BigButtonsTexture.loadFromFile("../assets/Keyboard Extras.png");
+        // 8 * 4
+        std::vector < std::pair<int, int>> BigButtonPositions = { {2 * 128 / 4, 2 * 128 / 8}, {1 * 128 / 4, 0} };
+        std::vector<std::unique_ptr<sf::Sprite>> tSprite2;
+        tSprite2.resize(BigButtonPositions.size());
+        for(int i = 0; i < BigButtonPositions.size();i++)
+        {
+            tSprite2[i] = std::make_unique<sf::Sprite>();
+            tSprite2[i]->setTexture(BigButtonsTexture);
+            tSprite2[i]->setTextureRect(sf::IntRect(BigButtonPositions[i].first, BigButtonPositions[i].second, 128 / 4, 128 / 8));
+            tSprite2[i]->setScale(5.f, 5.f);
+            tSprite2[i]->setPosition(sf::Vector2f((i % 4) * 200, (i / 4 + 1) * 200));
+            rt.draw(*tSprite2[i]);
         }
 
         // todo next set position 

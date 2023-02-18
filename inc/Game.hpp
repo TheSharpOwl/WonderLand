@@ -42,6 +42,8 @@ namespace wonderland
 		static constexpr int playerIdx = 0;
 
 		bool m_restarted = false;
+
+		bool m_runGame = false;
 	};
 }
 #endif

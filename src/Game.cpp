@@ -61,26 +61,38 @@ namespace wonderland {
 				continue;
 			}
 
-			m_characters[playerIdx]->reset();
-			handleKeyboardEvents(dt);
-
-			for(std::size_t i = 1 ; i < m_characters.size();i++)
+			if(m_runGame)
 			{
-				auto pBot = std::dynamic_pointer_cast<Bot>(m_characters[i]);
-				if (pBot->getHp() == 0)
+				m_characters[playerIdx]->reset();
+				handleKeyboardEvents(dt);
+
+				for (std::size_t i = 1; i < m_characters.size(); i++)
 				{
-					restart();
-					break;
+					auto pBot = std::dynamic_pointer_cast<Bot>(m_characters[i]);
+					if (pBot->getHp() == 0)
+					{
+						restart();
+						break;
+					}
+					pBot->reset();
+					pBot->updatePlayerRect(m_characters[playerIdx]->getCollisionRect());
+					pBot->update(dt);
 				}
-				pBot->reset();
-				pBot->updatePlayerRect(m_characters[playerIdx]->getCollisionRect());
-				pBot->update(dt);
+
+				if (m_restarted)
+					continue;
+				handleCollisions(dt);
+
 			}
-
-			if(m_restarted)
-				continue;
-			handleCollisions(dt);
-
+			else
+			{
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+				{
+					m_runGame = true;
+					continue;
+				}
+			}
+			
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
@@ -92,11 +104,16 @@ namespace wonderland {
 			}
 
 			// draw player in the end to appear above every other character in case of overlapping
-			m_characters[playerIdx]->draw(*m_window);
+			if(m_runGame)
+			{
+				m_characters[playerIdx]->draw(*m_window);
 
-			UI::draw(*m_window, m_characters, playerIdx);
-			// just to test
-			//UI::showControls(*m_window);
+				UI::draw(*m_window, m_characters, playerIdx);
+			}
+			else
+			{
+				UI::showControls(*m_window);
+			}
 
 			m_window->display();
 		}
@@ -105,6 +122,7 @@ namespace wonderland {
 	void Game::restart()
 	{
 		m_restarted = true;
+		m_runGame = false;
 		m_characters.clear();
 		// todo reset other stuff here too
 		loadCharacters();

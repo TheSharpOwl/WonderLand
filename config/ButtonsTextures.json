@@ -1,0 +1,65 @@
+[
+    {
+        "path": "../assets/Keyboard Letters and Symbols.png",
+        "name": "Up",
+        "posInTexture": [0,0],
+        "size": [16, 16],
+        "posOnScreen": [100, 100],
+        "scale": 5.0,
+        "comment": ""
+    },
+    {
+        "path": "../assets/Keyboard Letters and Symbols.png",
+        "name": "Down",
+        "posInTexture": [16,0],
+        "size": [16, 16],
+        "posOnScreen": [175, 100],
+        "scale": 5.0,
+        "comment": ""
+    },
+    {
+        "path": "../assets/Keyboard Letters and Symbols.png",
+        "name": "Left",
+        "posInTexture": [32,0],
+        "size": [16, 16],
+        "posOnScreen": [250, 100],
+        "scale": 5.0,
+        "comment": ""
+    },
+    {
+        "path": "../assets/Keyboard Letters and Symbols.png",
+        "name": "Right",
+        "posInTexture": [48,0],
+        "size": [16, 16],
+        "posOnScreen": [325, 100],
+        "scale": 5.0,
+        "comment": ""
+    },
+    {
+        "path": "../assets/Keyboard Letters and Symbols.png",
+        "name": "F",
+        "posInTexture": [80,32],
+        "size": [16, 16],
+        "posOnScreen": [100, 175],
+        "scale": 5.0,
+        "comment": "Attack"
+    },
+    {
+        "path": "../assets/Keyboard Extras.png",
+        "name": "Space",
+        "posInTexture": [64,32],
+        "size": [32, 16],
+        "posOnScreen": [100, 250],
+        "scale": 5.0,
+        "comment": "Jump"
+    },
+    {
+        "path": "../assets/Keyboard Extras.png",
+        "name": "Esc",
+        "posInTexture": [32,0],
+        "size": [32, 16],
+        "posOnScreen": [100, 325],
+        "scale": 5.0,
+        "comment": "Restart"
+    }
+]

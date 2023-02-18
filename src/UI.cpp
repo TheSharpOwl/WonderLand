@@ -1,11 +1,20 @@
+#include <fstream>
+
 #include "UI.hpp"
 #include "Character.hpp"
+#include "nlohmann/json.hpp"
 
 namespace wonderland {
+
+    using json = nlohmann::json;
+
     bool UI::loadedHpTexture = false;
     sf::Sprite UI::sprite;
     sf::Texture UI::playerHpTexture;
     sf::Texture UI::reversePlayerHpTexture;
+	std::unordered_map<std::string, UI::up<sf::Texture>>  UI::ms_pathToTexture;
+    std::vector<ButtonSprite> UI::ms_buttonSprites;
+
 
     void UI::draw(sf::RenderTarget &rt, std::vector<std::shared_ptr<Character>> characters, int playerIdx) {
         if(!loadedHpTexture)
@@ -66,49 +75,52 @@ namespace wonderland {
 
     void UI::showControls(sf::RenderTarget& rt)
     {
-        // load the texture
-        sf::Texture smallButtonsTexture;
-        smallButtonsTexture.loadFromFile("../assets/Keyboard Letters and Symbols.png");
-        std::vector<std::unique_ptr<sf::Sprite>> tSprite;
-        // 8 * 14
-        // 128 * 244
-        // todo add lambda to do calculation based on position
-        std::vector<std::pair<int, int>> buttonPositions = { {0,0}, {128 / 8, 0}, {128 / 8 * 2, 0}, {128 / 8 * 3, 0}, {128/8 * 5, 224/14 * 2} };
-
-
-
-        tSprite.resize(buttonPositions.size());
-
-        for(int i =  0 ; i < buttonPositions.size();i ++)
+        static bool configLoaded = false;
+        if (!configLoaded)
         {
-            tSprite[i] = std::make_unique<sf::Sprite>();
-            tSprite[i]->setTexture(smallButtonsTexture);
-            tSprite[i]->setTextureRect(sf::IntRect(buttonPositions[i].first, buttonPositions[i].second, 128 / 8, 224 / 14));
-            tSprite[i]->setScale(5.f, 5.f);
-            tSprite[i]->setPosition(sf::Vector2f((i % 4) * 200, (i/4 + 1) * 200));
-            rt.draw(*tSprite[i]);
+            loadConfig();
+            configLoaded = true;
+        }
+
+        for(auto& s : ms_buttonSprites)
+        {
+            rt.draw(*s.pSprite);
         }
 
 
+    }
 
-        sf::Texture BigButtonsTexture;
-        BigButtonsTexture.loadFromFile("../assets/Keyboard Extras.png");
-        // 8 * 4
-        std::vector < std::pair<int, int>> BigButtonPositions = { {2 * 128 / 4, 2 * 128 / 8}, {1 * 128 / 4, 0} };
-        std::vector<std::unique_ptr<sf::Sprite>> tSprite2;
-        tSprite2.resize(BigButtonPositions.size());
-        for(int i = 0; i < BigButtonPositions.size();i++)
+    void UI::loadConfig()
+    {
+        std::ifstream f(kButtonsConfigPath);
+        json data = json::parse(f);
+
+
+
+        for(auto a : data)
         {
-            tSprite2[i] = std::make_unique<sf::Sprite>();
-            tSprite2[i]->setTexture(BigButtonsTexture);
-            tSprite2[i]->setTextureRect(sf::IntRect(BigButtonPositions[i].first, BigButtonPositions[i].second, 128 / 4, 128 / 8));
-            tSprite2[i]->setScale(5.f, 5.f);
-            tSprite2[i]->setPosition(sf::Vector2f((i % 4) * 200, (i / 4 + 1) * 200));
-            rt.draw(*tSprite2[i]);
+
+            const auto& path = a["path"];
+			if(!ms_pathToTexture.contains(path))
+			{
+                auto tex = std::make_unique<sf::Texture>();
+                tex->loadFromFile(path);
+                ms_pathToTexture[path] = std::move(tex);
+			}
+
+            const auto& tex = *ms_pathToTexture[path];
+
+            ButtonSprite bs;
+            bs.name = a["name"];
+            bs.pSprite = std::make_unique<sf::Sprite>();
+            bs.pSprite->setTexture(tex);
+            auto texRect = sf::IntRect(a["posInTexture"][0], a["posInTexture"][1], a["size"][0], a["size"][1]);
+            bs.pSprite->setTextureRect(texRect);
+            bs.pSprite->setScale(a["scale"], a["scale"]);
+            bs.pSprite->setPosition(a["posOnScreen"][0], a["posOnScreen"][1]);
+
+            ms_buttonSprites.push_back(std::move(bs));
         }
-
-        // todo next set position 
-
 
     }
 }

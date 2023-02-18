@@ -155,8 +155,13 @@ namespace wonderland {
                 t.setFont(font);
                 t.setString(std::string(a["string"]));
                 t.setCharacterSize(a["size"]); // in pixels, not points!
-                if (a["color"] == "Black")
+                if (a["color"] == "Blue")
+                    t.setFillColor(sf::Color::Blue);
+                else if (a["color"] == "Red")
+                    t.setFillColor(sf::Color::Red);
+                else // black by default otherwise
                     t.setFillColor(sf::Color::Black);
+
                 // todo add more color cases
 
                 t.setPosition(a["pos"][0], a["pos"][1]);

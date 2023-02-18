@@ -1,6 +1,28 @@
 [
     {
         "fontPath": "../assets/yoster.ttf",
+        "string": "Welcome to Wonderland",
+        "size": 50,
+        "pos": [
+            190,
+            100
+        ],
+        "color": "Blue",
+        "comment": ""
+    },
+    {
+        "fontPath": "../assets/yoster.ttf",
+        "string": "Press Enter to Start",
+        "size": 40,
+        "pos": [
+            275,
+            190
+        ],
+        "color": "Red",
+        "comment": ""
+    },
+    {
+        "fontPath": "../assets/yoster.ttf",
         "string": "Move",
         "size": 60,
         "pos": [

@@ -40,6 +40,11 @@ namespace wonderland {
         static std::unordered_map<std::string, up<sf::Texture>> ms_pathToTexture;
         static std::vector<ButtonSprite> ms_buttonSprites;
 
+        static std::vector<sf::Text> ms_texts;
+        static std::unordered_map<std::string, up<sf::Font>> ms_pathToFont;
+
         static inline const std::string kButtonsConfigPath = "../config/ButtonsTextures.json";
+        static inline const std::string kTextConfigPath = "../config/Text.json";
+
     };
 }

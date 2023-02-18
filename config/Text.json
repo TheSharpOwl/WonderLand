@@ -1,0 +1,46 @@
+[
+    {
+        "fontPath": "../assets/yoster.ttf",
+        "string": "Move",
+        "size": 60,
+        "pos": [
+            550,
+            255
+        ],
+        "color": "Black",
+        "comment": ""
+    },
+    {
+        "fontPath": "../assets/yoster.ttf",
+        "string": "Attack",
+        "size": 60,
+        "pos": [
+            550,
+            325
+        ],
+        "color": "Black",
+        "comment": ""
+    },
+    {
+        "fontPath": "../assets/yoster.ttf",
+        "string": "Jump",
+        "size": 60,
+        "pos": [
+            550,
+            400
+        ],
+        "color": "Black",
+        "comment": ""
+    },
+    {
+        "fontPath": "../assets/yoster.ttf",
+        "string": "Restart",
+        "size": 60,
+        "pos": [
+            550,
+            475
+        ],
+        "color": "Black",
+        "comment": ""
+    }
+]

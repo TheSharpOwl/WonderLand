@@ -1,10 +1,19 @@
 [
     {
+        "path": "../assets/menu_background.png",
+        "name": "Menu",
+        "posInTexture": [0,0],
+        "size": [3381, 1881],
+        "posOnScreen": [55, 80],
+        "scale": 0.27,
+        "comment": ""
+    },
+    {
         "path": "../assets/Keyboard Letters and Symbols.png",
         "name": "Up",
         "posInTexture": [0,0],
         "size": [16, 16],
-        "posOnScreen": [100, 100],
+        "posOnScreen": [175, 255],
         "scale": 5.0,
         "comment": ""
     },
@@ -13,7 +22,7 @@
         "name": "Down",
         "posInTexture": [16,0],
         "size": [16, 16],
-        "posOnScreen": [175, 100],
+        "posOnScreen": [250, 255],
         "scale": 5.0,
         "comment": ""
     },
@@ -22,7 +31,7 @@
         "name": "Left",
         "posInTexture": [32,0],
         "size": [16, 16],
-        "posOnScreen": [250, 100],
+        "posOnScreen": [325, 255],
         "scale": 5.0,
         "comment": ""
     },
@@ -31,7 +40,7 @@
         "name": "Right",
         "posInTexture": [48,0],
         "size": [16, 16],
-        "posOnScreen": [325, 100],
+        "posOnScreen": [400, 255],
         "scale": 5.0,
         "comment": ""
     },
@@ -40,7 +49,7 @@
         "name": "F",
         "posInTexture": [80,32],
         "size": [16, 16],
-        "posOnScreen": [100, 175],
+        "posOnScreen": [400, 325],
         "scale": 5.0,
         "comment": "Attack"
     },
@@ -49,7 +58,7 @@
         "name": "Space",
         "posInTexture": [64,32],
         "size": [32, 16],
-        "posOnScreen": [100, 250],
+        "posOnScreen": [325, 400],
         "scale": 5.0,
         "comment": "Jump"
     },
@@ -58,7 +67,7 @@
         "name": "Esc",
         "posInTexture": [32,0],
         "size": [32, 16],
-        "posOnScreen": [100, 325],
+        "posOnScreen": [350, 475],
         "scale": 5.0,
         "comment": "Restart"
     }

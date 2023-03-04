@@ -1,0 +1,150 @@
+[
+    {
+        "name": "player",
+        "comment": "Player character should always be the first one",
+        "strength": 25,
+        "startPos": [100.0, 506.0],
+        "animations": [
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png",
+                "type": "WalkingRight",
+                "nFrames": 6,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png",
+                "type": "WalkingLeft",
+                "nFrames": 6,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png",
+                "type": "AttackRight",
+                "nFrames": 6,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png",
+                "type": "AttackLeft",
+                "nFrames": 6,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png",
+                "type": "JumpRight",
+                "nFrames": 8,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png",
+                "type": "JumpLeft",
+                "nFrames": 8,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png",
+                "type": "Idle",
+                "nFrames": 4,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            }
+        ]
+    }
+]

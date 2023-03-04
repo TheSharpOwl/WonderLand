@@ -6,7 +6,10 @@
 #include "UI.hpp"
 #include "Audio.hpp"
 
+#include "nlohmann/json.hpp"
+
 #include <chrono>
+#include <fstream>
 #include <memory>
 #include <utility>
 
@@ -47,7 +50,6 @@ namespace wonderland {
 			}
 
 			float dt;
-
 			{
 				const auto new_tp = std::chrono::steady_clock::now();
 				dt = std::chrono::duration<float>(new_tp - tp).count();
@@ -130,26 +132,103 @@ namespace wonderland {
 
 	void Game::loadCharacters()
 	{
-		
-		{
-			// first character (which the player controls)
-			TextureChangeInfo info;
-			info.scale = { 2.f, 2.f };
-			info.upCut = 3.f;
-			std::vector<Animation> playerCharacterAnim;
-			playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
-			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info);
-			playerCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info,true);
-			playerCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info);
-			playerCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info, true);
-			playerCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info);
-			playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
-			playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
+		const std::string configPath = "../config/Animations.json";
+		using json = nlohmann::json;
 
-			const int playerStrength = 25;
-			auto playerCharacter = std::make_shared<Character>(sf::Vector2f{ 100.f, 500.f + info.upCut * 2 }, CharacterType::Player, playerCharacterAnim, playerStrength);
-			m_characters.push_back(std::move(playerCharacter));
+		std::ifstream f(configPath);
+		json data = json::parse(f);
+
+		auto stringToAnimationInt = [](const std::string& typeName)
+		{
+			AnimationType type;
+			if (typeName == "WalkingRight")
+				type = AnimationType::WalkingRight;
+			else if (typeName == "WalkingLeft")
+				type = AnimationType::WalkingLeft;
+			else if (typeName == "AttackRight")
+				type = AnimationType::AttackRight;
+			else if (typeName == "AttackLeft")
+				type = AnimationType::AttackLeft;
+			else if (typeName == "JumpRight")
+				type = AnimationType::JumpRight;
+			else if (typeName == "JumpLeft")
+				type = AnimationType::JumpLeft;
+			else if (typeName == "Idle")
+				type = AnimationType::Idle;
+			else
+				return -1;
+
+			return animationTypeToInt(type);
+
+		};
+		// first index is the player character always
+		for(const auto& d : data)
+		{
+			std::vector<Animation> animations;
+			animations.resize(animationTypeToInt(AnimationType::Count));
+			const auto startPos = sf::Vector2f{ d["startPos"][0], d["startPos"][1] };
+			const int strength = d["strength"];
+			CharacterType characterType = CharacterType::Enemy;
+			if (d["name"] == "player")
+				characterType = CharacterType::Player;
+
+			for(const auto& a : d["animations"])
+			{
+				const int idx = stringToAnimationInt(a["type"]);
+
+				if(idx < 0)
+				{
+					std::cout << "error in the animation type name of " << d["name"] << "\n";
+					exit(-1);
+				}
+
+				TextureChangeInfo info;
+
+				const std::string filePath = a["file"];
+				const int nFrames = a["nFrames"];
+				const float holdTime = a["holdTime"];
+				const bool reverseX = a["reverse"][0];
+				[[maybe_unused]] const bool reverseY = a["reverse"][1];
+
+				info.scale.x = a["scale"][0];
+				info.scale.y = a["scale"][1];
+				// clockwise order starting from up
+				info.upCut = a["cut"][0];
+				info.rightCut = a["cut"][1];
+				info.downCut = a["cut"][2];
+				info.leftCut = a["cut"][3];
+
+				// reverseY is not needed but ok
+				animations[idx] = Animation(filePath, nFrames, holdTime, info, reverseX);
+			}
+
+
+
+			auto character = std::make_shared<Character>(startPos, characterType, animations, strength);
+			m_characters.push_back(std::move(character));
 		}
+
+
+		// todo : 1. save todos between the lines if relevant 2. add enemy config to the json instead of manual one and remove all the manual load under here (including the commented player one)
+		//{
+		//	// first character (which the player controls)
+		//	TextureChangeInfo info;
+		//	info.scale = { 2.f, 2.f };
+		//	info.upCut = 3.f;
+		//	std::vector<Animation> playerCharacterAnim;
+		//	playerCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Walk_6.png", 6, 0.1f, info,true);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Attack2_6.png", 6, 0.1f, info, true);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Jump_8.png", 8, 0.1f, info, true);
+		//	playerCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/2_Owlet_Monster/Owlet_Monster_Idle_4.png", 4, 0.1f, info);
+
+		//	const int playerStrength = 25;
+		//	auto playerCharacter = std::make_shared<Character>(sf::Vector2f{ 100.f, 500.f + info.upCut * 2 }, CharacterType::Player, playerCharacterAnim, playerStrength);
+		//	m_characters.push_back(std::move(playerCharacter));
+		//}
 
 		// todo make a pointer to animation then if null don't do it later or use optional
 		std::vector<Animation> enemyCharacterAnim;

@@ -203,9 +203,16 @@ namespace wonderland {
 			}
 
 
-
-			auto character = std::make_shared<Character>(startPos, characterType, animations, strength);
-			m_characters.push_back(std::move(character));
+			if (characterType == CharacterType::Player)
+			{
+				auto character = std::make_shared<Character>(startPos, characterType, animations, strength);
+				m_characters.push_back(std::move(character));
+			}
+			else
+			{
+				auto enemyCharacter = std::make_shared<Bot>(startPos, animations, strength);
+				m_characters.push_back(std::move(enemyCharacter));
+			}
 		}
 
 
@@ -231,28 +238,29 @@ namespace wonderland {
 		//}
 
 		// todo make a pointer to animation then if null don't do it later or use optional
-		std::vector<Animation> enemyCharacterAnim;
+
+		//std::vector<Animation> enemyCharacterAnim;
 		// todo might need to leave more space for animations to not look weird
-		{
-			TextureChangeInfo info;
-			info.leftCut = 35.f;
-			info.upCut = 60.f;
-			info.rightCut = 35.f;
-			info.scale = { 2.f, 2.f };
+		//{
+		//	TextureChangeInfo info;
+		//	info.leftCut = 35.f;
+		//	info.upCut = 60.f;
+		//	info.rightCut = 35.f;
+		//	info.scale = { 2.f, 2.f };
 
-			enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
-			enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, false);
-			enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, true);
-			enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, false);
-			enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, true);
-			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {}; // todo lol enemies cannot jump (I think as a game design it is fine just wanna improve it some time xD)
-			enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
-			enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, info, true);
+		//	enemyCharacterAnim.resize(animationTypeToInt(AnimationType::Count));
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingRight)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, false);
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::WalkingLeft)] = Animation("../assets/Skeleton_Warrior/Walk.png", 7, 0.1f, info, true);
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::AttackRight)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, false);
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::AttackLeft)] = Animation("../assets/Skeleton_Warrior/Attack_3.png", 4, 0.1f, info, true);
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::JumpRight)] = {}; // todo lol enemies cannot jump (I think as a game design it is fine just wanna improve it some time xD)
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::JumpLeft)] = {};
+		//	enemyCharacterAnim[animationTypeToInt(AnimationType::Idle)] = Animation("../assets/Skeleton_Warrior/Idle.png", 7, 0.1f, info, true);
 
-			const int enemyStrength = 10;
-			auto enemyCharacter = std::make_shared<Bot>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim, enemyStrength);
-			m_characters.push_back(std::move(enemyCharacter));
-		}
+		//	const int enemyStrength = 10;
+		//	auto enemyCharacter = std::make_shared<Bot>(sf::Vector2f{ 700.f, 309 + info.upCut * 2 }, enemyCharacterAnim, enemyStrength);
+		//	m_characters.push_back(std::move(enemyCharacter));
+		//}
 	}
 
 	void Game::handleKeyboardEvents(float dt)

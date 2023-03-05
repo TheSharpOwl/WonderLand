@@ -146,5 +146,113 @@
                 ]
             }
         ]
+    },
+    {
+        "name": "enemy",
+        "comment": "",
+        "strength": 10,
+        "startPos": [700.0, 429.0],
+        "animations": [
+            {
+                "file": "../assets/Skeleton_Warrior/Walk.png",
+                "type": "WalkingRight",
+                "nFrames": 7,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    60.0,
+                    35.0,
+                    0,
+                    35
+                ],
+                "reverse": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/Skeleton_Warrior/Walk.png",
+                "type": "WalkingLeft",
+                "nFrames": 7,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    60.0,
+                    35.0,
+                    0,
+                    35
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/Skeleton_Warrior/Attack_3.png",
+                "type": "AttackRight",
+                "nFrames": 4,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    60.0,
+                    35.0,
+                    0,
+                    35
+                ],
+                "reverse": [
+                    false,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/Skeleton_Warrior/Attack_3.png",
+                "type": "AttackLeft",
+                "nFrames": 4,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    60.0,
+                    35.0,
+                    0,
+                    35
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            },
+            {
+                "file": "../assets/Skeleton_Warrior/Idle.png",
+                "type": "Idle",
+                "nFrames": 7,
+                "holdTime": 0.1,
+                "scale": [
+                    2.0,
+                    2.0
+                ],
+                "cut": [
+                    3.0,
+                    0,
+                    0,
+                    0
+                ],
+                "reverse": [
+                    true,
+                    false
+                ]
+            }
+        ]
     }
 ]

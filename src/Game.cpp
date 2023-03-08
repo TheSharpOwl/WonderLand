@@ -36,7 +36,7 @@ namespace wonderland {
 
 		// todo maybe dependency design is wrong
 		// Todo add background music here and add it in level
-		Level levelOne("Level 1", "../assets/game_background_1.png", "");
+		Level levelOne(1);
 
 		while (m_window->isOpen())
 		{
@@ -214,6 +214,7 @@ namespace wonderland {
 				m_characters.push_back(std::move(enemyCharacter));
 			}
 		}
+
 	}
 
 	void Game::handleKeyboardEvents(float dt)

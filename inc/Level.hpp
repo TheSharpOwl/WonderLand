@@ -8,11 +8,11 @@
 namespace wonderland
 {
 	class Game;
-	// TODO Ziad make levels have numbers for backgrounds and music for example format level_X_background.png and so on...
+
 	class Level
 	{
 	public:
-		Level(std::string levelName, const std::string& backgroundPath, const std::string& backgroundMusicPath);
+		Level(int levelNumber);
 
 	protected:
 		friend class Game;

@@ -1,0 +1,8 @@
+[
+    {
+        "levelNo" : 1,
+        "levelName" : "Level 1",
+        "backgroundImage": "../assets/game_background_1.png",
+        "backgroundMusic": "../assets/xDeviruchi - Decisive Battle.wav"
+    }
+]

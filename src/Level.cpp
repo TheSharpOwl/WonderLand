@@ -51,8 +51,7 @@ namespace wonderland
 		// scale it to fit the window size
 		m_backgroundSprite.setScale(Game::screenWidth / m_backgroundTexture.getSize().x, Game::screenHeight / m_backgroundTexture.getSize().y);
 
-		// todo load music from the parameter
-		Audio::startBackgroundMusic();
+		Audio::startBackgroundMusic(backgroundMusicPath);
 
 	}
 }

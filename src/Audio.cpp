@@ -22,10 +22,10 @@ namespace wonderland
 		}
 	}
 
-	void Audio::startBackgroundMusic()
+	void Audio::startBackgroundMusic(const std::string& backgroundMusicPath)
 	{
 		createEngine();
-		irrklang::ISound* snd = ms_engine->play2D(kBackgroundMusicPath.c_str(), true, false, true);
+		irrklang::ISound* snd = ms_engine->play2D(backgroundMusicPath.c_str(), true, false, true);
 		if (snd)
 		{
 			// todo add volume controller and change sound from keyboard

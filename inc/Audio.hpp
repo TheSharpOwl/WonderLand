@@ -15,8 +15,6 @@ namespace wonderland
         // todo use unique_ptr and remove dctor
         static irrklang::ISoundEngine* ms_engine;
 
-        static inline const std::string kBackgroundMusicPath = "../assets/xDeviruchi - Decisive Battle.wav";
-
     public:
 
         Audio(Audio& other) = delete;
@@ -28,7 +26,7 @@ namespace wonderland
         static void createEngine();
 
 
-        static void startBackgroundMusic();
+        static void startBackgroundMusic(const std::string& backgroundMusicPath);
 
     };
 

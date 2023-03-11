@@ -4,6 +4,7 @@ project(Wonderland)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
 
 option(SFML_PATH "Path to SFML library package" "${PROJECT_SOURCE_DIR}/modules/SFML-2.5.1")
+option(IRRKLANG_PATH "Path to IRRKLANG library package" "${PROJECT_SOURCE_DIR}/modules/irrKlang-64bit-1.6.0")
 
 file(GLOB WONDERLAND_HEADERS "${PROJECT_SOURCE_DIR}/inc/*")
 file(GLOB WONDERLAND_SRC "${PROJECT_SOURCE_DIR}/src/*")
@@ -12,6 +13,11 @@ file(GLOB WONDERLAND_SRC "${PROJECT_SOURCE_DIR}/src/*")
 if (NOT SFML_PATH)
     set(SFML_PATH "${PROJECT_SOURCE_DIR}/modules/SFML-2.5.1")
 endif()
+
+if (NOT IRRKLANG_PATH)
+    set(IRRKLANG_PATH "${PROJECT_SOURCE_DIR}/modules/irrKlang-64bit-1.6.0")
+endif()
+
 message(STATUS "HERe is the list ${ALL_LIB_FILES_IN_SFML}")
 add_executable(main "${WONDERLAND_HEADERS}" "${WONDERLAND_SRC}" main.cpp)
 

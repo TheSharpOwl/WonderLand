@@ -22,7 +22,9 @@ For now writing what I am using (will update it to all possible versions..etc)
     cd build
     cmake .. -A x64 -G "Visual Studio 17 2022" -DSFML_PATH="C:/Wonderland/modules/SFML-2.5.1" -DSFML_PATH="C:/Wonderland/modules/irrKlang-64bit-1.6.0"
     ```
-** Note that relative path to the libraries might not work so try to pass absolute path **
+
+    **Note that relative path to the libraries might not work so try to pass absolute path**
+
 3. Open the `.sln` file in `Wonderland/build` and build it inside Visual Studio (just build or try to run and close the error window)
 4. Copy all dll files for all libraries in the modules folders (from their bin folders and make sure you copy the right ones for debug or release) to the built exe path
 5. Run inside visual studio

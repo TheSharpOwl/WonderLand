@@ -14,7 +14,7 @@ For now writing what I am using (will update it to all possible versions..etc)
 
 ## How to Run:
 1. Put SFML and irrklang in the same folder of this repo in new folder `modules`(optional)
-2. Example (in case sfml 2.5.1 is used and step 1 is done):
+2. Example:
     ```bash
     git clone https://github.com/TheSharpOwl/WonderLand.git
     cd Wonderland

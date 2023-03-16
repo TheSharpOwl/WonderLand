@@ -35,6 +35,10 @@ namespace wonderland {
 
         static void loadConfig();
 
+        static void setScore(int newScore) { ms_score = newScore; }
+
+        static int getScore() { return ms_score; }
+
     private:
         // to load an image only once (so we got only one texture for each unique image)
         static std::unordered_map<std::string, up<sf::Texture>> ms_pathToTexture;
@@ -45,6 +49,8 @@ namespace wonderland {
 
         static inline const std::string kButtonsConfigPath = "../config/ButtonsTextures.json";
         static inline const std::string kTextConfigPath = "../config/Text.json";
+
+        static inline int ms_score = 0;
 
     };
 }

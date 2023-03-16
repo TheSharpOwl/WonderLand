@@ -44,11 +44,13 @@ namespace wonderland
 
 		int getStrength() const { return m_strength; }
 
-		void getPoints(int points);
+		void increasePoints(int points);
 
 		void getDamage(int dmg);
 
 		int getHp() const;
+
+		int getPoints() const { return m_points; }
 
 		bool isAnimationFinished()
 		{
@@ -68,6 +70,7 @@ namespace wonderland
 		float m_gravity = 1.1f;
 		bool m_isGettingDamage = false;
 		bool m_isGettingPoints = false;
+		int m_points = 0;
 		int m_strength;
 		// todo add m_
 		AnimationType currentAnimationType;

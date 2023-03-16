@@ -94,7 +94,9 @@ namespace wonderland {
 					continue;
 				}
 			}
-			
+
+			UI::setScore(m_characters[playerIdx]->getPoints());
+
 			m_window->clear();
 
 			m_window->draw(levelOne.m_backgroundSprite);
@@ -278,7 +280,7 @@ namespace wonderland {
 		}
 
 		for (auto a : attackers)
-			m_characters[a]->getPoints(1); // todo random number
+			m_characters[a]->increasePoints(1); // todo random number
 
 		for (auto d : damaged)
 			m_characters[d.first]->getDamage(d.second);

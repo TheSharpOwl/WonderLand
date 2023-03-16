@@ -2,6 +2,7 @@
 
 #include "UI.hpp"
 #include "Character.hpp"
+#include "Game.hpp"
 #include "nlohmann/json.hpp"
 
 namespace wonderland {
@@ -71,8 +72,27 @@ namespace wonderland {
                 rect.setFillColor(sf::Color(0.f, 0.f, 0.f, 1.f));
                 rect.setOutlineColor(sf::Color(0, 0, 0)); // black
                 rt.draw(rect);
-            	}
+            }
         }
+
+        sf::Font font;
+        if (!font.loadFromFile("../assets/yoster.ttf"))
+        {
+            
+        }
+
+        sf::Text t;
+        t.setFont(font);
+
+        std::string scoreString = "Score " + std::to_string(ms_score);
+        t.setString(scoreString.c_str());
+        t.setCharacterSize(50);
+        //t.setFillColor(sf::Color(63, 162, 194, 255));
+        t.setFillColor(sf::Color::White);
+        t.setStyle(sf::Text::Bold);
+        t.setPosition(Game::screenWidth - 500 , 25);
+        rt.draw(t);
+
     }
 
     void UI::showControls(sf::RenderTarget& rt)

@@ -120,10 +120,10 @@ namespace wonderland
 			return currentAnimationType == AnimationType::AttackLeft || currentAnimationType == AnimationType::AttackRight;
 		}
 
-		void Character::getPoints(int points)
+		void Character::increasePoints(int points)
 		{
 			m_isGettingPoints = true;
-		// todo add points here
+			m_points += points;
 		}
 
 		void Character::getDamage(int dmg)
